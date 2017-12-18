@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no, email=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+    <title>弹框动画</title>
+    <link type="text/css" href="css/index.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../../js/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="../../js/util.js"></script>
+    <script type="text/javascript" src="js/index_ln.js"></script>
+    <!--<script type="text/javascript" src="js/index.js"></script>-->
+</head>
+<body>
+    <iframe class="iframdh" frameborder="0" scrolling="no" id="iframedh" width="100%" height="100%"></iframe>
+    <div class="window">
+        <div class="animation">
+            <div class="closeBtn" onclick="closeWin()"></div>
+            <div class="content textMsg">
+                <div class="text">
+                    <p>精打细算有一手，您上个月的结转流量为1023.23MB/1023.23GB，点击下方“流量查询”查看更多详情！</p>
+                </div>
+                <div class="btn">流量查询</div>
+            </div>
+            <div class="content performMsg">
+                <p>您好，您名下的18900000000于本月23日行使了国漫免预存/押金开通权益。</p>
+            </div>
+        </div>
+    </div>
+<script>
+    function closeWin(e){
+        $('.animation').addClass('animationOutUp').parents('.window').fadeOut(1000);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+@charset "utf-8";   //设置编码格式
+
+//在根元素<html>中定义了一个基本字体大小为62.5%（也就是10px。)  1rem = 10px
+html {font-size: 62.5%;/*10 ÷ 16 × 100% = 62.5%*/}
+body {font-size: 1.4rem;/*1.4 × 10px = 14px */}
+h1 { font-size: 2.4rem;/*2.4 × 10px = 24px*/}
+
+.reset(){
+  *{margin: 0;padding: 0;}
+  ul,ol{list-style: none;}
+  a{text-decoration: none;}
+  img{border: none}
+}
+.reset();
+//清除浮动
+.cearfix{
+  &:after{
+    content: "";
+    display: block;
+    clear:both;
+  }
+  zoom:1;
+}
+.bc(){
+  margin-left:auto;
+  margin-right: auto;
+}
+.fl(@fl:left){
+  float: @fl;
+  display: inline;
+}
+.fr(@fr:right){
+  float: @fr;
+  display: inline;
+}
+.font14(){
+  font-size: 14px;
+}
+@fs:14px;
+.rel(){
+  position: relative;
+}
+.abs(){
+  position: absolute;
+}
+.fix(){
+  position: fixed;
+}

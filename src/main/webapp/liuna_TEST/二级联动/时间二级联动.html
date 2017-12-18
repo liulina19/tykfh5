@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta  charset="utf-8" />
+    <meta name="author" content="@my_coder">
+    <title>时间联动</title>
+</head>
+
+<body>
+<select id="year">
+    <option>请选择年份</option>
+</select>
+<select id="month">
+    <option>请选择月份</option>
+</select>
+<select id="day">
+    <option>请选择日</option>
+</select>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    var y=document.getElementById("year"),
+        m=document.getElementById("month"),
+        d=document.getElementById("day");
+
+    //年
+    var year=new Date().getFullYear();
+    for(var i=year;i>=1990;i--){
+        y.options[year+1-i]=new Option(i,i);    //第一个参数是option的文本值，第二个参数是option的value值
+    }
+
+    //月
+    for(var i=1;i<=12;i++){
+        m.options[i]=new Option(i,i);
+    }
+
+    //日
+    var day = function(){
+        d.length=1;        //初始化
+        var y_value=y.value,
+            m_value=m.value;
+        if(y_value==""||m_value==""){
+            return;
+        }
+        else{
+            var arr=[31,28,31,30,31,30,31,31,30,31,30,31];
+            if((y_value%4==0&&y_value%100!=0)||y_value%400==0){
+                arr[1]++;
+            }
+            for(i=1;i<=arr[m_value-1];i++){
+                d.options[i]=new Option(i,i);
+            }
+        }
+    }
+
+    y.onchange = function(){
+        day();
+    }
+    m.onchange = function(){
+        day();
+    }
+
+</script>

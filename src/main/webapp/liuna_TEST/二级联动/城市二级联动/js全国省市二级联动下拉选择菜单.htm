@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>js全国省市二级联动下拉选择菜单</title>
+</head>
+<body>
+<script language="javascript" src="city.js"></script>
+<form action="" method="post" name="form1">
+    <table !bgcolor="#FFFDE6" width="300" cellspacing="0" cellpadding="1" border="0">
+        <tbody>
+            <tr>
+                <td class="black_con9" align="right">省份：</td>
+                <td class="black_con9">
+                    <select name="selectp" onchange="selectcityarea('selectp','selectc','form1');">
+                    <option value="0">选择省份</option>
+                    <option value="01">北京</option>
+                        <option value="02" selected="selected">深圳</option>
+                        <option value="03">上海</option>
+                        <option value="04">重庆</option>
+                        <option value="05">天津</option>
+                        <option value="06">广东</option>
+                        <option value="07">河北</option>
+                        <option value="08">山西</option>
+                        <option value="09">内蒙古</option>
+                        <option value="10">辽宁</option>
+                        <option value="11">吉林</option>
+                        <option value="12">黑龙江</option>
+                        <option value="13">江苏</option>
+                        <option value="14">浙江</option>
+                        <option value="15">安徽</option>
+                        <option value="16">福建</option>
+                        <option value="17">江西</option>
+                        <option value="18">山东</option>
+                        <option value="19">河南</option>
+                        <option value="20">湖北</option>
+                        <option value="21">湖南</option>
+                        <option value="22">广西</option>
+                        <option value="23">海南</option>
+                        <option value="24">四川</option>
+                        <option value="25">贵州</option>
+                        <option value="26">云南</option>
+                        <option value="27">西藏</option>
+                        <option value="28">陕西</option>
+                        <option value="29">甘肃</option>
+                        <option value="30">青海</option>
+                        <option value="31">宁夏</option>
+                        <option value="32">新疆</option>
+                        <option value="33">香港</option>
+                        <option value="34">澳门</option>
+                        <option value="35">台湾</option>
+                    </select>
+                </td>
+            </tr>
+        <tr>
+            <td class="black_con9" align="right">县/市：</td>
+            <td class="black_con9">
+                <select name="selectc">
+                    <option value="0" selected="selected">选择城市</option>
+                    <option value="0201">罗湖</option>
+                    <option value="0202">福田</option>
+                    <option value="0203">南山</option>
+                    <option value="0204">盐田</option>
+                    <option value="0205">宝安</option>
+                    <option value="0206">龙岗</option>
+                </select>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<script language="javascript">
+first("selectp","selectc","form1",0,0);
+</script>
+
+
+</body></html>

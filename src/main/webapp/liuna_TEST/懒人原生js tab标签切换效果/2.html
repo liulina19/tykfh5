@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <title>jquery_hjb_tab插件demo</title>
+    <link rel="stylesheet" href="h.css"/>
+</head>
+<style>
+    .tabs ul { width: 100%; list-style-type: none;}
+    .tabs ul li { width: 48%; display: inline-block; margin: 0; padding: 0;}
+    .tabs ul li a {border-bottom: 3px solid #cccccc; width: 100%; height: 100%; display: block; text-align: center; min-height: 40px; line-height: 40px; text-decoration: none; font-family: "微软雅黑"; color: #a94442}
+    .tabs ul li a.cur { border-bottom: 3px solid #f26123;}
+    .tabCons section { display: none;}
+    .tabCons section:nth-child(1) { display: block;}
+</style>
+<body>
+
+<div id="tab">
+    <div class="tabs">
+        <ul>
+            <li><a href="#">tab1</a></li>
+            <li><a href="#">tab2</a></li>
+            <li><a href="#">tab3</a></li>
+            <li><a href="#">tab4</a></li>
+        </ul>
+    </div>
+    <div class="tabCons">
+        <section>内容一</section>
+        <section>内容二</section>
+        <section>内容三</section>
+        <section>内容四</section>
+    </div>
+</div>
+
+<script>
+    window.onload = h_tab('tab');
+    function h_tab(tabId){
+        var oLinks = document.getElementById(tabId).getElementsByTagName("a");
+        var oCons = document.getElementById(tabId).getElementsByTagName("section");
+        for(var i = 0; i<oLinks.length; i++){
+            oLinks[i].index = i;
+            oLinks[i].onclick = function () {
+                for(var j =0; j<oLinks.length; j++){
+                    oLinks[j].className="";
+                    oCons[j].style.display = "none";
+                }
+                this.className="cur";
+                oCons[this.index].style.display ="block";
+            }
+
+        }
+    }
+
+</script>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>select.html</title>
+
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+</head>
+
+<body>
+<select id = "myCourse" onchange = "getCourse();">
+    <option value = "" selected>--请选择一门课程--</option>
+</select>
+
+<textarea id = "myares" rows="10" cols="30"></textarea>
+<script type="text/javascript" type = "text/javascript">
+
+    var last_select_num = 3;//加入从数据库中查询
+
+    //动态添加第一门课程
+    var myOption = document.createElement("option");
+        myOption.value = "jazzz";
+        myOption.text = "java";
+        myCourse.add(myOption);
+
+    //动态添加第二门课程、
+    myOption = document.createElement("option");
+    myOption.value = "选择oracle";  //值
+    myOption.text = "oracle";   //文本
+    myCourse.add(myOption);
+
+    //动态添加第三门课程、
+    myOption = document.createElement("option");
+    myOption.value = "javaEE";
+    myOption.text = "javaEE";
+    myCourse.add(myOption);
+
+    function getCourse(){
+        myares.value += "你选择了："+myCourse.value +"\r\n";
+    }
+
+</script>
+</body>
+</html>

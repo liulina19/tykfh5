@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="padding-left: 100px">
+<br><br>
+   第一个数： <input id="fistNumber" type="text">
+<br>
+   第二个数：<input id="twiceNumber" type="text">
+    <br><br>
+    <button id="plus" onclick="plus()">+</button>
+    <button id="reduce" onclick="reduce()">-</button>
+    <button id="ride" onclick="ride()">*</button>
+    <button id="except" onclick="except()">/</button>
+    <br>
+     <p id="result"></p>
+
+    选择:<br>
+    看书：<input type="checkbox" name="checkbox" value=1><br>
+    写字：<input type="checkbox" name="checkbox" value=2><br>
+    打飞机：<input type="checkbox" name="checkbox" value=3><br>
+    玩游戏：<input type="checkbox" name="checkbox" value=4><br>
+    <button onclick="checkboxed('checkbox')">全选</button>
+    <button onclick="uncheckboxed('checkbox')">取消全选</button>
+
+
+<script>
+    var result_1;
+    //加法
+    function plus(){
+        var a = firstNumber();
+        var b = secendNumber();
+        num = Number(a) + Number(b);
+        result(num);
+    }
+    //减法
+    function reduce(){
+        var a = firstNumber();
+        var b = secendNumber();
+        num = Number(a) - Number(b);
+        result(num);
+    }
+    //乘法
+    function ride(){
+        var a = firstNumber();
+        var b = secendNumber();
+        num = Number(a) * Number(b);
+        result(num);
+    }
+    //除法
+    function except(){
+        var a = firstNumber();
+        var b = secendNumber();
+        num = Number(a)/ Number(b);
+        result(num);
+    }
+    //输出结果
+    function result(result_1){
+        document.getElementById("result").innerHTML = result_1;
+    }
+    //获取第一个数的值
+    function firstNumber(){
+        var first = document.getElementById("fistNumber").value;
+        return first;
+    }
+    //获取第二个值
+    function secendNumber(){
+        var secend = document.getElementById("twiceNumber").value;
+        return secend;
+    }
+
+//    选择
+    function checkboxed(objName){
+      var objNameList = document.getElementsByName(objName);
+      if(null != objNameList){
+          alert("全选操作");
+          for(var i = 0; i < objNameList.length; i ++){
+              objNameList[i].checked="check";
+          }
+      }
+    }
+
+    function uncheckboxed(objName){
+        var objNameList = document.getElementsByName(objName);
+        if(null != objNameList){
+            alert("取消全选");
+            for(var j = 0; j < objNameList.length; j++){
+                objNameList[j].checked="";
+            }
+        }
+    }
+</script>
+</body>
+</html>

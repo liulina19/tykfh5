@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script type="text/javascript" src="jquery-1.5.1.min.js"></script>
+    <style>
+        body{
+
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+        .wrap{
+            position:absolute;
+            width: 100%;
+            overflow: hidden;
+        }
+        .touch{
+            position:  relative;
+            width: 896px;
+            height: 120px;
+            left:-400px;
+        }
+        .touchDiv{
+            width: 100px;
+            height: 100px;
+            background: #fFF;
+            padding: 5px;
+            float: left;
+            border: 1px #FD482C solid;
+            /*display: inline;*/
+            text-align: center;
+            color: #fff;
+
+        }
+        .touchDiv p{
+            background: #0000FF;
+            line-height:90px;
+            margin-top: 5px;
+        }
+    </style>
+    <title>Title</title>
+</head>
+<body>
+    <div class="wrap" id="touchId">
+        <div class="touch" id="touch">
+            <div class="touchDiv"><p>1</p></div>
+            <div class="touchDiv"><p>2</p></div>
+            <div class="touchDiv"><p>3</p></div>
+            <div class="touchDiv"><p>4</p></div>
+            <div class="touchDiv"><p>5</p></div>
+            <div class="touchDiv"><p>6</p></div>
+            <div class="touchDiv"><p>7</p></div>
+            <div class="touchDiv"><p>8</p></div>
+        </div>
+    </div>
+
+    <script>
+
+        var currentLeft=0;//记录滑动到 当前的位置
+        var leftspeed=4;//滑动的速度
+        var rightspeed=-4;//滑动的速度
+        var morenLeft=0;
+        var touchWidth=0;
+        var itemDiv=0;
+        var maxRight=0;
+        $(function(){
+        	currentLeft=parseInt($(".touch").css("left").replace("px",""));//容易默认位置
+        	touchWidth=$(document).width();//屏幕宽度
+        	itemDiv=$(".touch").width();//滑动容器长度
+        	maxRight=itemDiv-touchWidth;
+        	var startx=0, starty=0;
+        	
+        	console.log(touchWidth+":"+itemDiv+":"+morenLeft+":"+maxRight);
+        	
+        	
+        	var touchDiv=document.getElementById("touch");
+        	touchDiv.addEventListener("touchstart",function (e){
+        		startx = e.touches[0].pageX;
+			 	starty = e.touches[0].pageY;
+        	})
+        	
+        	
+        	touchDiv.addEventListener("touchmove",function (event){
+    		     var touch = event.touches[0]; //获取第一个触点
+		         var x = Number(touch.pageX); //页面触点X坐标
+		         var y = Number(touch.pageY); //页面触点Y坐标
+				 var leftOrRight=  x-startx;//向左向右滑动
+				 moveDiv(leftOrRight);
+        	})
+        	
+        	
+        	
+        })
+        
+        function moveDiv(leftOrRight){
+//      	console.log(leftOrRight);
+        	if(leftOrRight >= 0){//左
+        		currentLeft+=leftspeed;
+        		console.log("left"+currentLeft);
+        		if(currentLeft >= 0){
+        			currentLeft=0;
+        		}
+        		$(".touch").css({"left":currentLeft});
+				 	
+		 	}else{//右
+		 		currentLeft+=rightspeed;
+		 		console.log("right"+currentLeft);
+		 	    if(currentLeft <=  -maxRight){
+		 	    	currentLeft=-maxRight;
+        		}
+		 	    $(".touch").css({"left":currentLeft});
+		 	}
+        }
+        
+      
+        
+    </script>
+</body>
+</html>

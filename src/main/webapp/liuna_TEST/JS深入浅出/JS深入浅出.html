@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="js-深入浅出.js"></script>
+
+<style>
+    li{
+        padding:30px 10px;
+        border:1px green solid;
+    }
+</style>
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    <li>object对象:function,array,date.....
+        数据原始类型：number,string,boolean,null,undefined
+    </li>
+    <li>
+        <h3 style="color:red;font-weight: bold">
+            类型检测:typeof;instanceof;Object.prototype.toString;constructor;duck type(鸭子类型)
+        </h3>
+        <h3 style="color:red;">typeof：适合基本类型及function检测，遇到null失效</h3>
+        <p>typeof 100 "number"</p>
+        <p>typeof true  "boolean"</p>
+        <p>typeof function  "function"</p>
+        <p>typeof null == "object"</p>
+        <h3 style="color:red;">
+            [[Class]]通过{}.toString拿到，适合内置对象和基元类型，
+            遇到 null和undefined失效（IE678等返回[object Object]）
+        </h3>
+        <h3 style="color:red;">
+            instanceof判断对象：适合自定义对象，也可以用来检测原生对象，在不同iframe和window间检测时失效
+        </h3>
+        <p>prototype：对象属性</p>
+        <p>[1,2] instanceof Array == true</p>
+        <p>new object() instanceof Array == false</p>
+        <h3>object.prototype.toString.apple([]); == "[object Array]",</h3>
+        <p>Object.prototype.toString.apply(function(){}); == "[object Function]";</p>
+        <p>Object.prototype.toString.apply(null);=="[object Null]"</p>
+        <p>Object.prototype.toString.apply(undefined); == "[object Undefined]"</p>
+<p>注：IE6/7/8 Object.prototype.toString.apply(null)返回"[object Object]"</p>
+        <h3 style="color:red;font-weight: bold">
+            运算符
+        </h3>
+        <p>var val=(1,2,3);  //val=3 从左到右依次计算表达式的值，表示每个表达式的值都会被计算， 取值是小括号最后一个数值，</p>
+        <p>
+            delete obj.x;
+            var obj={x:1};
+            obj.x;    //1
+            delete obj.x;
+            obj.x; //undefined
+        </p>
+        <p>
+            var obj={};
+            Object.defineProperty(obj,'x',{
+            configurable:false,
+            value:1
+            });
+            delete obj.x;//false
+            obj.x; //1
+        </p>
+        <p>运算符in</p>
+        <p>
+        window.x=1;
+       'x' in window;//true
+        </p>
+        <h3 style="color:red;font-weight: bold">
+            try
+        </h3>
+        <p>
+            try{
+                throw "test";
+            }catch(ex){
+                console.log(ex);//test
+            }finally{
+                console.log('finally');
+            }
+        </p>
+        <p>
+            try{
+                try{
+                    throw new Error("oops");
+                }
+                finally{
+                    console.log("finally");
+                }
+            }
+            catch(ex){
+                console.error("outer",ex.message);
+            }
+            执行顺序：finally;outer;oopes
+        </p>
+
+        <p>
+            try{
+                try{
+                    throw new Error("oops");
+                }catch(ex){
+                    console.error("inner",ex.message);
+                }
+            finally{
+                    console.log("finally");
+                }
+            }
+            catch(ex){
+                console.log("outer",ex.message);
+            }
+            执行：inner,oops,finally
+        </p>
+
+        <p>
+            try{
+            try{
+            throw new Error("oops");
+            }catch(ex){
+            console.error("inner",ex.message);
+            throw ex;
+            }
+            finally{
+            console.log("finally");
+            }
+            }
+            catch(ex){
+            console.log("outer",ex.message);
+            }
+            执行：inner,oops,finally,outer,oops
+        </p>
+
+        <h3 style="color:red;font-weight: bold">
+            函数声明和函数表达式:主要区别：函数声明会预先处理
+        </h3>
+        <p>
+            函数声明
+            function fd(){
+            //do sth
+                return true;
+            }
+        </p>
+        <p>
+            函数表达式
+            var fe=function(){
+                //do sth
+            }
+        </p>
+
+        <h3 style="color:red;font-weight: bold">
+            for.....in遍历的时候不要用这个
+
+        </h3>
+        <p>
+            //顺序不确定，2  enumerable为false时不会出现    3  for  in对象属性时受原型链影响
+            var p;
+            var obj={x:1,y:2}
+            for(p in obj){
+            }
+        </p>
+
+    </li>
+    <li>
+        <h3 style="color:red;font-weight: bold">
+            严格模式:不能使用with，不允许未声明的变量被赋值比如：x=1;这会报错;eval中的代码不能创建eval所在
+            作用域下的变量、函数。而是为eval单独创建一个作用域，并在eval返回时丢弃。函数中的特殊对象arguments
+            是静态副本，而不像非严格模式那样，修改arguments或修改变量会相互影响。删除 configurable=false
+            的属性时报错，而不是忽略。<br>
+            禁止八进制字面量，如010（八进制的8）；eval,arguments变为关键字，不可作为变量名、函数名等。<br>
+            一般函数调用时（不是对象的方法调用，也不使用apply/call/bind等修改this）this指向null,而不是全局
+            对象。若使用apply/call,当传入null或undefined时，this将指向null或undefined, 而不是全局对象。
+            试图修改不可写属性（writable=false），在不可扩展的对象上添加属性时报 TypeError，而不是忽略 。
+            arguments,caller,arguments.callee被禁用。<br>
+            严格械是一种特殊的运行模式，它修复了部分语言上的不足，提供更强的错误检查，并增强安全性。
+        </h3>
+    <p>
+        function func(){
+            'use strict';
+        }
+        第二种写法：
+        'use strict';
+        function func(){
+        }
+    </p>
+        <p>
+            严格模式下 delete参数、函数名报错:<br>
+            !function(a){
+                console.log(delete a);
+            }(1);<br>
+            结果输出false
+        </p>
+        <p>
+            !function(a){
+                'use strict';
+                delete a;
+            }(1);  <br>
+            结果输出SyntaxError（语法错误）
+        </p>
+        <p>
+           严格模式下 delete不可配置的属性报错
+        </p>
+        <p>
+            !function(a){
+                var obj={};
+                Object.defineProperty(obj,
+                'a',{configurable:false});//定义configurable为false的属性
+                console.log(delete obj.a);
+            }(1);
+            结果输出false
+        </p>
+
+        <p>
+            !function(a){
+            'use strict';
+            var obj={};
+            Object.defineProperty(obj,
+            'a',{configurable:false});//定义configurable为false的属性
+            delete obj.a;//删除a的属性
+            }(1);
+            结果输出TypeError
+        </p>
+        <p>严格模式下:对象字面量重复属性名报错</p>
+        <p>
+
+            一般模式下：<br>
+            !function(){
+                var obj={x:1,x:2};
+                console.log(obj.x);
+            }();
+            结果输出2<br>
+            严格模式下：<br>
+            !function(){
+            'use strict';
+            var obj={x:1,x:2};
+            console.log(obj.x);
+            }();
+            结果输出SyntaxError（语法错误）
+        </p>
+        <p>严格模式下：禁止八进制字面量</p>
+        <p>
+            一般模式下：<br>
+            !function(){
+                console.log(0123);//表示八进制的值
+            }();
+            结果输出83
+        </p>
+
+        <p>
+            严格模式下：<br>
+            !function(){
+            'use strict';
+            console.log(0123);//表示八进制的值
+            }();
+            结果输出SyntaxError（语法错误）
+        </p>
+
+        <p>严格模式下：eval,arguments变为关键字，不能作为变量，函数名</p>
+        <p>
+            !function(){
+                function eval(){}
+                console.log(eval);
+            }();
+            结果输出：function eval(){}
+        </p>
+        <p>
+            !function(){
+            'use strict';
+            function eval(){}
+            }();
+            结果输出：SyntaxError(语法错误)
+        </p>
+
+        <p>严格模式下：eval独立作用域</p>
+        <p>
+            一般模式下：<br>
+            !function(){
+            eval('var evalVal = 2;');
+            console.log(typeof evalVal);
+            }();
+            结果输出：number
+        </p>
+        <p>
+            严格模式下：<br>
+            !function(){
+            'use strict';
+            eval('var evalVal = 2;');//会在独立的作用域中执行，所以在外面拿不到
+            console.log(typeof evalVal);
+            }();
+            结果输出：undefined
+        </p>
+    </li>
+    <li>
+        <h3 style="color:red;font-weight: bold">
+            对象
+        </h3>
+        <p>
+            var obj={x:1,y:2};
+            obj.x;  //1
+            obj.y;  //2
+        </p>
+        <p>
+            var obj={};
+            obj.y=2;
+            obj.x=1;  // x=1;y=2
+        </p>
+        <p style="color:red;font-weight: bold">
+           Object.create //系统内置函数,这个函数会接收一个参数，一般是一个对象,
+            会返回新创建的一个对象，并且让这个对象的原型指向这个参数
+        </p>
+        <p>
+            var obj=Object.create{x:1};
+            obj.x;  //1
+            typeof obj.toString //"function"
+            obj.hasOwnProperty('x'); //false
+
+            var obj=Objct.create(null);
+            obj.toString  //undefined
+        </p>
+
+        <p style="color:red;font-weight: bold">
+            属性读写
+        </p>
+        <p>
+            var obj={x:1,y:2};
+            obj.x;//1
+            obj["y"];//2
+        </p>
+        <p style="color:red;font-weight: bold">
+            属性删除
+        </p>
+        <p>
+            var person={age:28,title:'fe'};
+            delete person.age; //true
+            delete person['title']; //true
+            person.age; //undefined
+            delete person.age; //true
+            <br>
+            delete Object.prototype; //false  prototype这个属性不能被删除
+            <br>
+            var descriptor = Object.getOwnPropertyDescriptor(Object,'prototype');
+            //getOwnPropertyDescriptor获取属性中所有的标签
+            descriptor.configurable; //false   configurable标签表示是否可配置
+        </p>
+        <p>
+            var globalVal=1;  //globalVal定义全局变量
+            delete globalVal; //false
+            <br>
+            (function(){
+                  var localVal=1;
+                  return delete localVal;
+            }());  // false
+        </p>
+        <p>
+            function fd(){}; //被定义的函数也不能被删除
+            delete fd; // false
+        </p>
+        <p>
+            (function(){
+                function fd(){};
+                return delete fd;
+            }()); //false
+        </p>
+        <p>
+            ohNo = 1;
+            window.ohNo; //1
+            delete ohNo; //true
+        </p>
+
+        <p style="color:red;font-weight: bold">
+            属性检测
+        </p>
+        <p>
+            var cat = new Object;
+            cat.legs=4;
+            cat.name="Kitty";
+            <br>
+            'legs' in cat ; //true
+            'abc' in cat; //false
+            "toString" in cat; // false 原型连上有，属性里面没有
+            <br>
+            cat.hasOwnProperty('legs');//true   表示 cat这个对象上有属性legs
+            cat.hasOwnProperty('toString');//false   表示 cat这个对象上有属性abc
+            <br>
+            cat.propertyIsEnumerable('legs');//true   cat是否可以枚举
+            cat.propertyIsEnumerable('toString');//true   cat是否可以枚举
+        </p>
+
+        <p style="color:red;font-weight: bold">
+            属性枚举
+        </p>
+        <p>
+            var o={x:1,y:2,z:3};
+            'toString' in o; //true
+            o.propertyIsEnumerable('toString');  //false
+            var key;
+            for(key in o){
+                console.log(key); //x,y,z
+            }
+            <br>
+            var obj = Object.create(o);
+            obj.a=4;
+            var key;
+            for(key in obj){
+                console.log(key); //a,x,y,z  遍历对象所有属性
+            }
+            <br>
+
+            var obj=Object.create(o);
+            obj.a=4;
+            var key;
+            for(key in obj){
+                if(obj.hasOwnProperty(key)){
+                    console.log(key); //a  能过滤掉对象原型连上的属性
+                }
+            }
+
+        </p>
+
+        <p style="color:red;font-weight: bold">
+            属性get/set方法:1、get与set是方法，因为是方法，所以可以进行判断。
+            2、get是得到 一般是要返回的   set 是设置 不用返回
+            3、如果调用对象内部的属性约定的命名方式是_age
+        </p>
+        <p>
+            var man={
+                name:'Bosn',
+                weibo:'@Bosn',
+                get age(){
+                    return new Date().getFullYear() - 1988;
+                },
+                <br>
+                set age(val){
+                    console.log('Age can\'t be set to' + val);
+                }
+             <br>
+            console.log(man.age);//27
+            man.age=100;  //Age can't be set to 100
+            console.log(man.age); //still 27
+            }
+        </p>
+        <p>
+            var man={
+                weibo:'@Bosn',
+                $age:null,
+                get age(){
+                    if(this.$age == undefined){
+                        return new Date().getFullYear() - 1988;
+                   }else{
+                        return this.$age;
+                    }
+                },
+                set age(val){
+                    var =+ val;//一元操作符，把val变成数字,如果val本来就是数字就什么都不做，如果
+            //val是字符串，就是尝试转换成数字
+                    if(!isNaN(val) && val >0 && val < 150){
+                        this.$age=+val;
+                    }else{
+                        throw new Error('Incorrect val=' +val);
+                        }
+                }
+            }
+            <br>
+            console.log(man.age); //27
+            man.age = 100;
+            console.log(man.age); //100
+            man.age = 'abc'; // error:Incorrect val = NaN
+        </p>
+        <p style="color:red;font-weight: bold">
+            get/set与原型链
+        </p>
+        <p>
+            function foo(){};
+            Object.defineProperty(foo.prototype,'z',
+               {get:function(){return 1;}});
+            var obj= new foo();
+            <br>
+            obj.z; //1
+            obj.z=10;
+            obj.z ;//still 1
+
+            <br>
+            Object.defineProperty(obj,'z',   //defineProperty为当前的对象添加属性
+                {value:100,configurable:true});
+            obj.z //100
+            delete obj.z;
+            obj.z;//back to 1
+        </p>
+        <p style="color:red;font-weight: bold">
+           writable表示让这个对象只可读不可写
+        </p>
+        <p>
+            var o={};
+            Object.defineProperty({o,'x',{value:1});  //默认情况下：writable=false , configurable=false
+            var obj=Object.create(0);
+            obj.x; // 1
+            obj.x=200;
+            obj.x;//still 1 ,can't change it
+            <br>
+            Object.defineProperty(obj,'x',{writable:true,configurable:true,value:100});
+            obj.x;//100
+            obj.x=500;
+            obj.x;//500
+        </p>
+
+        <p style="color:red;font-weight: bold">
+            属性标签
+        </p>
+        <p>
+            Object.getOwnPropertyDescriptor({pro:true},'pro');  //getOwnPropertyDescriptor获取所有属性,pro判断的对象，后面的pro是要判断的对象
+            //Object{value:true,writable:true,enumerable:true,configurable:true}
+            //writable:属性是否可以修改（可写）；enumerable:属性是否可枚举,for in中是否会出现；configurable：属性标签是否可以再次修改,可不可以被delete删除；
+
+        </p>
+        <p>
+            var person={};
+            Object.defineProperty(person,'name',{   //defineProperty管理和设置属性
+                configurable:false,       person.name;  // Bosn Ma
+                writable:false,           person.name=1;
+                enumerable:true,          person.name;//still Bosn Ma
+                value:'Bosn Ma'           delete person.name; //false
+            });
+        <br><br>
+            Object.defineProperty(person,'type',{  //给person定义一个名叫type属性
+                configurable:true,
+                writable:true,
+                enumerable:false,
+                value:"Object"
+            });
+            Object.keys(person); //["name"]
+        </p>
+        <p>
+            Object.defineProperties(person,{
+                title:{value:'fe',enumerable:true},
+                corp:{value:'BABA',enumerable:true,writable:true}
+            });
+            Object.getOwnPropertyDescriptor(person,'salary');
+            //Object{value:50000,write:true,enumerable:true,configurable:false}
+            Object.getOwnPropertyDescriptor(person,'corp');
+            //Object{value:'BABA',write:true,enumerable:true,configurable:false}
+        </p>
+        <p>
+            Object.defineProperties(person,{
+                title:{value:'fe',enumerable:true},
+                corp:{value:'BABA',enumerable:true},
+                salary:{value:50000,enumerable:true,writable:true},
+                luck:{
+                    get:functioin(){
+                        return Math.random() > 0.5? 'good' : 'bad';
+                    }
+                },
+                promote:{
+                    set:funciton(level){
+                        this.salary*=1+level*0.1;
+                    }
+                }
+            });
+
+            Object.getOwnPropertyDescriptor(person,'salary');
+            //Object{value:50000,writable:true,enumerable:true,configurable:false}
+            Object.getOwnPropertyDescriptor(person,'corp');
+            //Object{value:'BABA',writable:false,enumerable:true,configurable:false}
+            person.salary; //50000
+            person.promote=2;
+            person.salary;//60000
+        </p>
+        <p>
+            var toString = Object.prototype.toString;
+            function getType(o){return toString.call(o).slice(8,-1);};  //截取字符串，从第八个开始，到最后一个结束，并且不要最后一个
+            <br>
+            toString.call(o); //[object Null]
+            getType(null); //Null
+            getType(undefined);  //Undefined
+            getType(1); //number
+            getType(new Number(1));  //Number
+            typeof new Number(1);  //object
+            getType(true);  //Boolean
+            getType(new Boolean(true));//Boolean
+        </p>
+
+        <p style="color:red;font-weight: bold">
+            extensible:对象是否可扩展，对象上的属性是否可以被继续添加
+        </p>
+        <p>
+            var obj={x:1,y:2};
+            Object.isExtensible(obj);//true    判断对象是否可扩展
+            Object.preventExtensions(obj);   //preventExtensions阻止obj添加新的属性，但是可以修改，删除
+            Object.isExtensible(obj);//false
+            obj.z=1;
+            obj.z;//undefined,add new property failed
+            Object.getOwnPropertyDescriptor(obj,'x');
+            //Object{value:1,writable:true,enumerable:true,configurable:true}
+
+            <br>
+            object.seal(obj);//object.seal()阻止删除修改对象标签
+            Object.getOwnPertyDescriptor(obj,'x');
+            //Object{value:1,writable:true,enumerable:true,configurable:false}
+            Object.isSealed(obj); //true   Object.isSealed()查看对象是否被隐藏,是否被object.seal
+            <br>
+
+            Object.freeze(obj);   //Object.freeze让对象不可配置属性，不可删除，甚至不可写,不可写，不可改，不可添加    对对象冻结
+            Object.getOwnPropertyDescriptor(obj,'x');
+            //Object{value:1,writable:false,enumerable:true,configurable:false}
+            Object.isFrozen(obj);//true
+            //  [caution] not affects prototype chain!!!
+        </p>
+
+        <p style="color:red;font-weight: bold">
+           序列化
+        </p>
+        <p>
+            var obj={x:1,y:true,z:[1,2,3],nullVal:null};
+            JSON.stringify(obj);//"{"x":1,"y":true,"z":[1,2,3],"nullVal":null}"
+            <br>
+            obj={val:undefined,a:NaN,b:Infinity,c:new Date()};
+            JSON.string(obj);//"{"a":null,"b":null,"c":2015-01-20T14:15:43.910Z}"
+            <br>
+            obj=JSON.parse('{"x":1}');  //后台返回一个数据，用JSON.parse()解析成javascript对象
+            obj.x; //1
+        </p>
+
+    </li>
+
+
+    <p>
+        <p style="color:red;font-weight: bold">
+            数组
+        </p>
+        <p>
+            var BAT=['Alibaba','Tencent','Baidu'];
+            var students=[{name:'Bosn',age:27},{name:'Nunnly',age:3}];
+            var arr=['Nunnly','is','big','keng','B',123,true,null];
+            var arrInArr=[[1,2],[3,4,5]];
+            <br>
+            var commasArr1=[1,,2] //1,undefined,2
+            var commasArr2=[,,];  //undefined*2
+        </p>
+        <p>
+            var arr=new Array();
+            var arrWithLength = new Array(100); //undefined*100    此处new可以省略(用new Array()创建数组的时候new可以省略)
+            var arrLikesLiteral = new Array(true,false,null,1,2,"hi");   //此处new可以省略
+            //等价于[true,false,null,1,2,"hi"]
+        </p>
+        <p style="color:red;font-weight: bold">
+            数组添加和删除
+        </p>
+        <p>
+            var arr=[1,2,3,4,5];
+            arr[1]; //2
+            arr.length; //5  数组长度
+            <br>
+
+            arr[5]=6;  //在数组的第五个位置添加6这个元素
+            arr.length; // 6
+
+            <br>
+
+            delete arr[0];  //删除数组的第一个元素
+            arr[0]; //undefined
+
+        </p>
+        <p>
+            var arr=[];  //创建一个空数组
+            arr[0] = 1;  //第一个元素赋值为 1
+            arr[1] = 2;//第二个元素赋值为 2
+            arr.push(3);  //在尾部添加 3
+            arr; //[1,2,3]
+            <br>
+
+            arr[arr.length] = 4;  //equal to arr.push(4)   //arr.length作为索引的话总是指向数组最后的元素的下一个
+            //这句话是在数组最后添加元素4
+
+            <br>
+
+            arr.unshift(0) ;  //在数组头部或者第一个元素之前添加一个元素
+            arr; //[0,1,2,3,4]
+            <br>
+
+            delete arr[2];  //删除数组的第三个元素
+            arr; //[0,1,undefined,3,4]  //第三个元素就变成了undefined
+            arr.length; //5
+            2 in arr; //false   用in操作符判断2这个数字在数组中存在不存在
+
+            <br>
+            arr.length -= 1;  //就是 arr.length - 1   此方法可以删除数组最后个元素
+            arr; //[0,1,undefined,3],  4 is removed
+            <br>
+            arr.pop(); //删除最尾部的元素  3 returned by pop
+            arr; //[0,1,undefined], 3 is removed
+            <br>
+            arr.shift();  //0 returned by shift   shift()方法是在头部删除元素
+            arr; //[1,undefined]
+        </p>
+        <p style="color:red;font-weight: bold">
+            数组迭代
+        </p>
+        <p>
+            var i = 0, n = 10;
+            var arr = [1,2,3,4,5];
+            for(; i < n; i++){   //for循环遍历数组
+                console.log(arr[i]); // 1,2,3,4,5
+            }
+
+            <br>
+            for(i in arr){   //for in方法循环遍历数组 会出现原型连(prototype)上的属性   并且for in不保证顺序
+                 console.log(arr[i]); //1,2,3,4,5
+            }
+            <br>
+            Array.prototype.x = 'inherited';   //给原型连属性prototype添加属性inherited
+            for(i in arr){
+                console.log(arr[i]); //1,2,3,4,5,inherited
+            }
+            for(i in arr){
+                if(arr.hasOwnProperty(i)){  //用hasOwnProperty过滤掉原型连上的属性s
+                    console.log(arr[i]);  // 1,2,3,4,5
+            }
+            }
+        </p>
+        <p style="color:red;font-weight: bold">
+            二维数组，遍历二维数组
+        </p>
+        <p>
+            var arr = [[0,1],[2,3],[4,5]];  //result
+            var i = 0,j = 0;   //rwo 0
+            var row;   //0  定义临时变量row
+            for(; i < arr.length; i++){     //1
+                row = arr[i];      //字数组row 1   每一个元素赋值给row
+                console.log('row' + i);   //2
+                for(j = 0; j < row.length; j++){    //3
+                    console.log(row[j]);     //row 2
+            }                     // 4
+            }                      //5
+        </p>
+        <p>
+            稀疏数组并不含有从0开始的连续索引，一般length属性值比实际元素个数大。
+        </p>
+        <p>
+            var arr1 = [undefined];
+            var arr2 = new Array(1);   //用new Array()构造了长度为1的数组
+            0 in arr1; //true
+            0 in arr2; //false                               var arr= [,,]   //稀疏数组
+            arr1.length = 100;    //设置length长度为100       0 in arr; //false
+            arr1[99] = 123;
+            99 in arr1; //true
+            98 in arr1;//false
+        </p>
+
+        <p style="color:red;font-weight: bold">
+            数组使用方法;[]=>Array.prototype数组的原型(Array.prototype)
+        </p>
+        <p>
+            将数组转换为字符串 并打印出数组 .join()<br>
+            var arr = [1,2,3];
+            arr.join(); //"1,2,3"
+            arr.join("_");  //"1_2_3"
+            <br>
+            function repeatString(str,n){   //创建repeatString函数，重复str字符串,并重复n次
+                return new Array(n + 1).join(str);   //new Array()构造一个数组，数组长度n+1;再通过.join()方法来把想要重复的字符串作为分隔符
+            }
+            repeatString("a",3); // "aaa"
+            repeatString("Hi",5) //"HiHiHiHiHi"
+        </p>
+        <p>
+            将数组逆序.reverse()（注：原数组进行修改）<br>
+            var arr=[1,2,3];
+            arr.reverse(); //[3,2,1]
+            arr; //[3,2,1]原数组进行修改
+        </p>
+        <p>
+            数组排序；.sort();(注：会按字母进行排序;原数组被修改)<br>
+            var arr=["a","d","c","b"];
+            arr.sort();//["a","b","c","d"]
+            <br>
+            arr=[13,24,51,3];
+            arr.sort(); //[13,24,3,51]
+            arr; ////[13,24,3,51]
+            <br>
+            arr.sort(function(a,b){   //比较函数
+                return a - b;
+            });  //[3,13,24,51]
+            <br>
+            arr = [{age:25},{age:39},{age:90}];
+            arr.sort(function(a,b){
+                return a.age - b.age;
+            });
+            arr.forEach(function(item){
+                console.log('age',item.age);
+            });
+            //result;
+            //age 25
+            //age 39
+            //age 99
+        </p>
+        <p>
+            数组合并.concat();(数组并不会被修改)<br>
+            var arr=[1,2,3];
+            arr.concat(4,5);
+            arr; //[1,2,3]  原数组末被修改
+            <br>
+            arr.concat([10,11],13);  //把数组作为参数，数组会被拉平  [1,2,3,10,11,13]
+            arr.concat([1,[2,3]]);  //如果参数是数组，数组元素还是数组。不会被拉平两次   [1,2,3,1,[2,3]]
+        </p>
+        <p>
+            .slice()返回部分数组(原数组不会被修改)，负数表示从后往前<br>
+            var arr = [1,2,3,4,5];
+            arr.slice(1,3);//[2,3]   //1 表示第二个索引，3表示想获取片断的位置的下一个位置结束
+            arr.slice(1); //[2,3,4,5]  //1表示从第二个索引开始
+            arr.slice(1,-1); //[2,3,4]   // -1表示最后一个元素；从第二个元素到最后一个元素
+            arr.slice(-4,-3); //[2]   -4表示倒数第四个元素，-3倒数第三个元素
+        </p>
+        <p>
+            数组拼接.splice();<br>
+            var arr=[1,2,3,4,5];
+            arr.splice(3);//returns[3,4,5]第三个索引开始删除后面的元素
+            arr;//[1,2]
+            <br>
+            arr = [1,2,3,4,5];
+            arr.splice(2,2); //returns [3,4]   2从第2个索引开始，删除2个元素，第二个2表示要删除元素的个数
+            arr;//[1,2,5];
+            <br>
+            arr = [1,2,3,4,5];
+            arr.splice(1,1,'a','b');  //returns [2]   1表示从第二个元素开始，1只删除一个元素，在被删除的位置添加 'a'和'b'两个元素
+            arr; //[1,'a','b',3,4,5]
+        </p>
+        <p>
+            数组遍历.forEach()
+            var arr = [1,2,3,4,5];
+            arr.forEach(function(x,index,a){   //x代表具体元素的值，index代表从0开始一直到长度-1的索引，a指向数组本身
+                console.log(x + '|' + index + '|' + a(a === arr));
+            });
+            //1|0|true     1就是a; 0就是x ; index一是0,
+            //2|1|true
+            //3|2|true
+            //4|3|true
+            //5|4|true
+        </p>
+        <p>
+            数组映射.map();搞活动吗这个例子就是把数组的每一个元素进行转换<br>
+            var arr= [1,2,3];
+            arr.map(function(x){
+                return x + 10;  //把数组里面的每一个元素加10
+            }); //[11,12,13]
+            arr; //[1,2,3]  原数组末被修改
+        </p>
+        <p>
+            数组过滤.filter();不会修改原来的数组<br>
+            var arr = [1,2,3,4,5,6,7,8,9,10];
+            arr.filter(function(x,index){
+                return index % 3 === 0 ||  x >= 8;   //筛选出来除3为0的或者大于等于8的
+            });  //return [1,4,7,8,9,10]
+            arr; //[1,2,3,4,5,6,7,8,9,10]
+        </p>
+        <p>
+                数组判断.every(), .some()任意一个元素符合条件就可以;.every()方法表示每一个元素都要符合条件；<br>
+                var arr = [1,2,3,4,5];
+                arr.every(function(x){  //every()每一个都符合条件
+                    return x < 10;
+                }); //true
+             <br>
+                arr.every(function(x){
+                    return x < 3;
+                }); //false
+            <br>
+            var arr =[1,2,3,4,5];
+            arr.some(function(x){
+                return x === 3;
+            }); //true
+            <br>
+            arr.some(function(x){
+                return x === 1000;
+            }); //false
+        </p>
+        <p>
+            .reduce()把数组两两作操作(相加，相减，相乘，等等)，最终得到唯一的值；reduceRright()<br>
+            <br>
+            var arr = [1,2,3];
+            var sum = arr.reduce(function(x,y){   //x指向第一个元素，y指向第二个元素;
+                return x + y    //先把0和1传进来，0+1=1，得到的和1作为下一个x，2作为y；再相加：1+2=3，每次相加的结果会作为下一个x,y是下一个元素3。
+            },0);  //6    0代表x的第一个值;这里可以自己设置数字
+            arr; //[1,2,3]
+            <br>
+            arr = [3,9,6];
+            var max = arr.reduce(function(x,y){
+                console.log(x + "|" + y);
+                return x > y ? x:y;
+            });//3|9
+            //9|6
+            max;//9
+            <br>
+            var max = arr.reduceRight(function(x,y){
+            console.log(x + "|" +y);   //x代表第一个元素，y代表第二个元素；3跟9比较大小，9大，是9，
+            //这时候x就是9，9作为下一次比较的第一个元素，y是第二个元素，9跟6比较大小，9大，输出9
+            return x > y?x:y;
+            });
+            //6|9
+            //9|3
+            max;//9
+        </p>
+        <p>
+            数组检索indexOf()从左向右查找;lastIndexOf()从右向左查找；<br>
+            var arr=[1,2,3,2,1];
+            arr.indexOf(2); //1   查找元素2    第二个元素是1
+            arr.indexOf(99); //-1   查找99  ，没找到，会返回-1
+            arr.indexOf(1,2); //4   查找1，并且从第二个元素开始查找   1表示查找1，2表示数组里面的第三个元素    4表示第五个元素的索引
+            arr.indexOf(1,-3); //4   查找1，从-3开始，-3负数代表从最后一个数开始往前数，从右向左数，
+            //-3就是倒数第三个数开始从左向右开始往后查找3，2，1 ，结果返回4（代表第五个元素）的索引。第五人索引是1
+            arr.indexOf(2,-1); //-1    查找2，-1代表从最后一个元素从左到右开始查找   找不到，结果是-1
+            arr.lastIndexOf(2); //3    查找2；lastIndexOf()从右向左查找2     3表示第四个元素
+            arr.lastIndexOf(2,-2); //3    查找2；从倒数第2个元素开始查找   找到2
+            arr.lastIndexOf(2,-3); //1
+        </p>
+        <p>
+            判断是否为数组<br>
+            Array.isArray([]);
+            []instanceof Array; //true
+            ({}).toString.apply([]) === '[object Array]'; //true
+            [].constructor === Array; //true
+        </p>
+        <p>
+            数组和字符串<br>
+            var str = "hello world";
+            str.charAt(0); //"h"     charAt()访问str的第一个元素
+            str[1];  //e   str元素的第二个索引
+            <br>
+            Array.prototype.join.call(str,"_");    //.call把字符串传进来
+            //"h_e_l_l_o_ _w_o_r_l_d"
+        </p>
+    </li>
+    <li>
+        <p style="color:red;font-weight: bold">
+            函数和作用域
+        </p>
+        <p>
+            function foo(x,y){    //foo:函数名   x 和 y :参数列表   整个的这一块叫做函数体
+                if(typeof x === 'number' &&
+                    typeof y === 'number'){
+                    return x + y;    //函数的返回值依赖 return语句; 一般的函数调用：如果没有return，默认会在所有代码执行完以后返回undefined
+                    //若是作为构造器，外面使用new调用，如果没有 return语句，或者return后面跟的是基本类型，会将this作为返回。反之如果
+                    //是return的一个对象的话，将会由这个对象作为new作为构造器，作为返回值
+                }esle{
+                    return 0;
+                }
+            }
+            foo(1,2);  //3
+            <br>
+            函数调用：<br>
+            foo(); //直接调用
+            o.method();//对象方法
+            new Foo(); //构造器
+            func.call(o); //call/apply/bind
+        </p>
+        <p>
+            函数声明<br>
+            function add(a,b){
+                a =+ a;
+                b =+ b;
+                if(isNaN(a)||isNaN(b)){
+                    return;
+                }
+                return a + b;
+            }
+        </p>
+        <p>
+            函数表达式<br>
+            //function variable
+            var add = function(a,b){
+                //do sth
+            };
+            <br>
+
+            //IEF(Immediately Executed Function)  匿名函数用括号括起来，并且是立即执行函数
+            (function(){
+                //do sth
+            })();
+            <br>
+
+            //fist-class function   将函数对象作为一个返回值
+            return function(){
+                //do sth
+            };
+            <br>
+
+            //NFE (Named Function Expression)   命名式函数表达式(NFE)
+            var add = function(a,b){
+                //do sth
+            };
+        </p>
+
+        <p>
+             函数构造器(Function(注：F要大写));所有函数的对象和方法的属性都是来自于构造器的protoytpe属性<br>
+            var func = new Function('a','b','console.log(a+b);');  //new一个函数,里面参数可以有多个。a和b：函数对象里面的形参
+            //console.log(a+b)：函数体里面的代码。
+            func(1,2); //3
+            <br>
+            var func = Function('a','b','console.log(a+b);');
+            func(1,2);//3
+        </p>
+        <p>
+            //CASE 1
+            Function('var localVal' = "local";console.log(localVal);')();   //在Function构造器里面创建一个变量localVal   ()表示立即执行
+            console.log(typeof localVal);  //在外面拿不到localVal；
+            //result:local,undefined
+            <br>
+
+            //CASE 2   一般的函数声明或者表达式，是能访问到外部的变量的
+            var globalVal='global';
+            (function(){
+                var localVal='local';
+                Function('console.log(typeof localVal,typeof globalVal);')();   //Function可以拿到全局变量，但是却拿不到它外层的变量
+            //local不可以被拿到，globalVal可以被拿到
+            })();
+            //result:undefined,string
+        </p>
+        <p>
+            this  全局作用域的this会指向全局对象。<br>
+            console.log(this.document === document); //true
+            console.log(this === window); //true
+            <br>
+            this.a = 37;  //创建全局变量a，并且赋值37
+            console.log(window.a); //37
+        </p>
+        <p>
+            一般函数的this;<br>
+            function f1(){
+                return this;
+            }
+            <br>
+            f1() === window; //true,global object
+            <br>
+            //在严格模式下<br>
+            function f2(){
+                'use strict'; //see strict mode
+                return this;
+            }
+            f2() === undefined; //true
+        </p>
+        <p>
+            作为对象方法的函数的this<br>
+            var o = {   //创建一个对象字面量o
+                prop:37,
+                f:function(){   //o的属性f, f的值是一个函数function(){}
+                    return this.prop;
+                }
+            };
+            console.log(o.f()); //logs 37   this指向对象o
+            <br>
+            var o = {prop:37};  //定义对象o  o的属性prop的值为37
+            <br>
+            function independent(){
+                return this.prop;
+            }
+            o.f=independent;
+            console.log(o.f()); //logs 37
+        </p>
+        <p>
+            对象原型连上睥this<br>
+            var o={f:function(){return this.a+this.b;}};  //创建一个对象o  f作为o的属性，function(){return this.a+this.b;}作为属性的值
+            var p = Object.create(o);
+            p.a=1;
+            p.b=4;
+            <br>
+            console.log(p.f()); //5
+        </p>
+        <p>
+            get/set方法与this<br>
+            function modulus(){
+                return Math.sqrt(this.re)*this.re + this.im*this.im);
+            }
+            <br>
+            var o = {
+                re:1,
+                im:-1,
+                get phase(){
+                    return Math.atan2(this.im,this.re);
+                }
+            };
+            Object.defineProperty(o,'modulus',{   //给o创建modulus属性
+                get:modulus,enumerable:true,configurable:true});
+            console.log(o.pase,o.modulus); //logs -0.78 1.4142
+        </p>
+        <p>
+            构造器中的this<br>
+            //case 1
+            function MyClass(){
+                this.a = 37;
+            }
+            var o = new MyClass();   //使用new 以后，this会指向原型为MyClass.Property属性；因为原型中做了this.a=37赋值。所以
+            //this最后会作为返回值.因为没有return.所以默认this会作为返回值,所以对象o就会有属性37
+            console.log(o.a); //37
+            <br>
+            <br>
+            //case 2
+            function C2(){
+                this.a = 37;  //属性a值为37
+                return{a:38};  //return返回对象38  所以结果是38     如果return返回的是一个对象，所以结果会以对象作为返回值
+            }
+            o = new C2();
+            console.log(o.a); //38
+        </p>
+        <p>
+            call/apply方法与this<br>
+            function add(c,d){
+                return this.a + this.b + c +d;
+            }
+            var o ={a:1,b:3};
+            <br>
+            add.call(o,5,7); //1+3+5+7=16    call在传参的时候是以正常的方式传
+            add.apply(o,[10,20]); //1+3+10+20=34     apply传参是把参数作为数组传进去
+            <br>
+            function bar(){
+                console.log(Object.prototype.toString.call(this));
+            }
+            bar.call(7); //["object Number"]
+        </p>
+        <p>
+            bind只有IE9+才有;bind方法与this<br>
+            function f(){
+                return this.a;
+            }
+            var g = f.bind({a:"test"});   //bind方法有一个参数{a:"test"}，参数是一个对象
+            console.log(g()); //test
+            var o ={a:37,f:f,g:g};
+            console.log(o.f(),o.g()); //37,test
+        </p>
+        <p>
+            函数属性&arguments是类数组的对象;arguments.length实参个数<br>
+            function foo(x,y,z){
+                arguments.length; //2
+                arguments[0]; //1
+                arguments[0]=10; //绑定关系
+                x; //change to 10   绑定关系    严格模式下依然是1
+                arguments[2]=100;   //末传参数
+                z; //still undefined !!!  失去绑定关系
+                arguments.callee === foo; //true  严格模式下不能使用
+            }
+
+            foo(1,2);   //传入参数只有两个 1和2，z没有传进去  所以上面arguments[2]=100结果是undefined
+            foo.length; //3    foo.length-形参个数
+            foo.name; //"foo"   .name属性  拿到函数的名字     foo.name - 函数名
+        </p>
+        <p>
+            apply/call方法<br>
+            function foo(x,y){
+                console.log(x,y,this);
+            }
+                foo.call(100,1,2); //1,2,Number(100)   call传参是扁平一个一个把参数传进去
+                foo.apply(true,[3,4]); //3,4,Boolean(true)     apply是以数组的形式传进去，数组的每一项作为参数传进去
+                foo.apply(null); //undefined,undefined,window
+                foo.apply(undefined); //undefined,undefined,window
+        </p>
+        <p>
+            严格模式下的apply/call方法<br>
+            function foo(x,y){
+                'use strict';
+                console.log(x,y,this);
+            }
+            foo.apply(null); //undefined,undefined,null
+            foo.apply(undefined); //undefined,undefined,undefined
+        </p>
+        <p>
+            bind方法IE9+才支持<br>
+            this.x = 9;  //全局环境下的this指向window,此处创建全局变量x=9
+            var module = {
+                x:81,
+                getX:function(){return this:x}
+            };
+            module.getX(); //81   对象.属性名的调用方法,this会返回81
+            <br>
+            var getX = module.getX;   //module.getX函数对象赋值给getX变量    函数对象赋值给某一个变量的时候this会指向全局变量 所以下面会
+            //得到9
+            getX(); //9
+            var boundGetX = getX.bind(module);  //bind方法会改变函数运行时候的this   bind绑定了module，所以会得到81
+            boundGetX(); //81
+        </p>
+        <p>
+              bind与curring; bind有函数颗粒化功能（函数颗粒化就是把一个函数拆成多个单元）<br>
+            function add(a,b,c){
+                return a + b + c;  //函数拼接;相加
+            }
+            <br>
+            //有时候可能不会一次把函数都调用完，而是调用一次把前两个函数传完以后，然后得到一个函数，再调用，
+            //并且每次都传入第三个值
+            var func = add.bind(undefined,100);   //此处不改变this,直接用undefined    100会固定赋值给第一个参数a
+            func(1,2); // 103    1给b   2给c
+            <br>
+
+            var func2 = func.bind(undefined,200);   //之前a绑定了100，所以这里的200会绑定给b,
+            func2(10);  //310   此处的10会绑定给c，所以得到的结果310
+        </p>
+        <p>
+            复杂参数；<br>
+            function getConfig(colors,size,otherOptions){
+                console.log(colors,size,otherOpthions);
+            }
+            <br>
+
+            var defaultConfig = getConfig.bind(null,"#CC0000","1024*768");
+            defaultConfig("123");  //#CC0000  1024*768   123
+            defaultConfig("456");  //#CC0000  1024*768   456
+        </p>
+        <p>
+            bind与new<br>
+            function foo(){      //如果直接调用foo()，this指向全局对象
+                this.b = 100;    //全局变量b，并且值是100
+                return this.a;     //返回对象是a
+            }
+            <br>
+            var func = foo.bind({a:1});   //用bind方法传入一个字面量a    this会指向bind的参数   所以this.a是1
+            func(); //1
+            new func();  //{b:100}    用new会特殊   return除非是对象，如果不是对象将会把this作为返回值，
+            //并且this会被初始化为一个默认的空对象，空对象的原型是foo.prototype,空对象的b属性被设置为100
+            //返回值返回会被忽略掉(this);所以结果会返回100
+        </p>
+    </li>
+    <li>
+        <p style="color:red;font-weight: bold">
+            闭包<br>
+        </p>
+        <p>
+            一般的函数:当函数被调用完以后，局部变量就可以被释放。具体释放情况取决于垃圾回收的机制。<br>
+            function outer(){
+                var localVal = 30;
+                return localVal;
+            }
+            outer();  //30
+            <br><br>
+            javaScrip里面的函数是对象：可以传参、可以作为返回值、函数里面也可嵌套别的函数<br>
+            function outer(){
+                var localVal = 30;        //局部变量
+                return function(){         //此处返回值是一个函数   匿名函数
+                    return localVal;      //在这个匿名函数里面又return了outer()函数里面的局部变量localVal
+                }
+            }
+
+            var func = outer();   //调用outer()的时候返回的是匿名函,这个匿名函数仍然可以访问外部outer()的局部变量
+            //outer()调用结束之后，func()仍然能访问到外部的局部变量
+            func();  //30
+        </p>
+        <p>
+            闭包例子<br>
+            !function(){
+                var localData = "localData here";
+                document.addEventListener('click',    //通过addEventListener添加点击事件，这个点击事件会用到外层的一些
+                //局部变量，有了闭包在数据传递上会更加灵活
+                    function(){
+                        console.log(localData);
+                });
+            }();
+
+            <br><br>
+            jquery的异步请求$.ajax<br>
+            !function(){
+                var localData = "localData here";
+                var url = "http://www.baidu.com/";
+                $.ajax({                    //jquery的异步请求$.ajax
+                    url:url,
+                    success:function(){    //success回调函数里面会用到外层的变量
+                        //do sth....
+                        console.log(localData);
+                        }
+                });
+            }();
+        </p>
+        <p>
+            闭包的例子，点击显示，点击2显示2，点击3显示3等；<br>
+            document.body.innerHTML="<div id="div1">aaa</div>"
+            + "<div id = "div2">bbb</div><div id="div3">ccc</div>";
+            for(var i = 1; i < 4; i ++){
+                !function(i){
+                    document.getElementById('div' + i),
+                    addEventListener('click',function(){
+                        alert(i);  //1,2,3    执行的时候这个i会取上面!function(i)；!function(i)这个i来源于每次
+                        //循环的时候赋值的i(  就是下面}(i)  )    这样的话点击的时候就会显示每次循环的1,2,3次序
+                    });
+                }(i);
+            }
+        </p>
+        <p>
+            闭包和封装<br>
+            (function(){
+                var _userId = 23492;
+                var _typeId = 'item';
+                var export = {};
+
+
+                function converter(userId){
+                    return +userId;
+                }
+
+                export.getUserId = function(){
+                    return converter(_userId);
+                }
+
+                export.getType = function(){
+                    return _typeId;
+                }
+
+                window.export = export;   //在浏览器里面编程的话用window.export = export把想输出的对象输出出去
+
+            }());
+
+
+            export.getUserId();  //23492    对于外部使用export对象方法的人来说，只能通过这个对象上提供的方法来去
+            //访问里面的具体的函数里面的对象
+            export.getTypeId();  //item
+            export._userId;  //undefined    直接拿里面的函数是拿不到的
+            export._typeId;  //undefined
+            export._converter;  //undefined
+        </p>
+    </li>
+    <li>
+        <p style="color:red;font-weight: bold">
+            作用域;重点：javaScript是没有块级作用域的:for循环或者while里面定义的变量跟外面声明定义的是没有差别的<br>
+
+            var a = 10; //全局作用域
+            (function(){
+                var b = 20;   //函数作用域  外面是拿不到的
+            })();
+            console.log(a);   //10
+            console.log(b);    //error,b in not defined
+
+            for(var item in{a:1,b:2}){    //此处item是全局变量，跟在最外层定义是一个道理
+                console.log(item);
+            }
+            console.log(item);   //item still is scope
+
+            eval("var a = 1;");  //eval
+        </p>
+        <p>
+            作用域链<br>
+            function outer2(){
+                var local2 = 1;
+                function outer1(){
+                    var local1 = 1;
+                    //visit local1,local2 or global3  从内向外访问是可以访问的   可以访问到外层变量local2
+                }
+                outer1();
+            }
+            var global = 1;
+            outer2();
+
+            function outer(){
+                var i = 1;
+                var func = new Function("console.log(typeof i);");   //new可以省略; Function构造器构造一个函数
+                func();  //undefined   Function构造器字符串的方式是访问不到定义位置所在的i  拿不到1            }
+            outer();
+        </p>
+        <p>
+            闭包写法:(function(){})();或者!function(){}()或者+function(){}();作用是把函数变成函数表达式，而不是函数声明<br>
+            (function(){
+                //do sth here
+                var a,b;
+            })();
+
+
+            !function(){
+                //do sth here
+                var a,b;
+            }();
+
+
+            +function(){
+                //do sth here
+                var a,b;
+            }();
+        </p>
+    </li>
+    <li>
+        <p style="color:red;font-weight: bold">
+                作用域和ES3等执行上下文
+        <p>
+        <p>
+            执行上下文<br>
+            console.log('ECO');
+
+            function funcEC1(){
+                console.log('EC1');
+                var funcEC2 = function(){
+                    console.log('EC2');
+                    var funcEC3 = function(){
+                        console.log('CE3');
+                    };
+                    funcEC3();
+                }
+            funcEC2;
+            }
+        funcEC1;
+        //EC0 EC1 EC2 EC3   执行顺序：先进入全局EC0;当调用funcEC1()的时候会从全局进入EC1；然后执行上下文；依次类推
+        //然后进入funcEC2,然后是funcEC3;当funcEC3结束后，再退回到funcEC2,再到funcEC1;funcEC1结束后再到EC0
+        </p>
+        <p>
+            变量对象Variable Object缩写为VO；全局变量解释<br>
+            VO(globalContext) === [[global]];
+
+            [[global]] = {
+                Math:<...>,
+                String:<...>,
+                isNaN:function() {[Native Code]}
+                ...
+                ...
+                window:global  //applied by browser(host)
+            };
+            GlobaContextVO   (VO === this === global)
+
+
+            String(10);   //   [[global]].String(10);
+            window.a = 10;   // [[global]].windowa = 10;
+            this.b = 20;  //[[global]].b = 20;
+        </p>
+        <p>
+            函数中的激活对象AO;<br>
+            VO(functionContext) === AO;
+
+            AO = {
+                arguments:<Arg0>   //函数在被调用的时候会被arguments初始化在AO对象(也就是激活对象)里面
+            };
+
+            arguments = {      //arguments之后会被AO放到VO(functionContext)
+                callee,
+                length,
+                properties-indexes
+            };
+        </p>
+        <p>
+            变量初始化阶段；VO按照如下顺序：1、函数参数（若末传入，初始化该参数值为undefined） 2、函数声明
+            3、变量声明（初始化变量值为undefined，若发生命名冲突，会忽略）<br>
+            function test(a,b){                           AO(test) = {                       global = {
+                var c = 10;                               a:10,                              Math:<....>
+                function d(){};                           b:undefined                        String:<....>
+                var e = function _e(){};                  c:undefined                        isNaN:function(){[Native Code]}
+                (function x(){});                         d:<ref to func "d">                ....
+                b = 20;                                   e:undeined                         ....
+                                                                                             window:global
+            }                                             };                                 };
+            test(10);
+            //比如test(10),那么a就是10；b没有传，所以是undefined; 注：变量初始化也就是变量被声明，
+            值是undefined，和这个值根本就不在这个变量里是有区别的，如果声明了但值是undefined，那么在浏览器里alert()一
+            下值会弹出undefined；如果根本就没有声明或者没有在AO里，那么会报一个function x(){}中 x is not defined；初始
+            化了函数参数以后会把函数声明放到VO里面，这就解释了会什么函数声明会被前置，也就是在test()在调用的时候，
+            也就是在变量初始化阶段，test()这里面的赋值等等一系列的语句还没有执行，在执行之前，就会把这个区域里面的
+            函数声明，放到VO里面，比如test()里面的函数d,是一个函数声明，那么在函数初始化阶段就会有d,并且它的值就是一个
+            函数d(){}，在这里面如果发生命名冲突，如果这里面也有另一个函数也叫d()，就会把前面的覆盖；比如：
+            如果在 test(a,b)里面也有一个d，test(a,b,d)；那么test(a,b,d)里面的d就会被后面的function d(){}这里面的d给覆盖，
+            最后拿到的还是函数声明d()（也就是这个函数对象）;;函数参数和函数声明处理完后就会处理变量声明，
+            变量的声明注意的一点：比如  var c = 10   等于10是个赋值语句，这个不是在变量初始化阶段去做的，变量初始化阶段
+            去做的只是var c这个声明的部分，它的值只是undefined；对于变量声明如果命名重复，会选择忽略。比如说：test(a,b)
+            里面有一个c，或者函数声明里面也有一个c，如果前面已经有了那么这个c会忽略掉而不会把它改为undefined
+        </p>
+        <p>
+            function foo(x,y,z){
+                function x(){};
+                alert(x);     // function x(){}
+            }
+            foo(100);
+
+            <br>
+
+            function foo(x,y,z){
+                function func(){};
+                var func;
+                console.log(func);    // function func(){}     执行顺序：函数参数，函数声明，变量声明
+                 // x,y,z然后是func(){}这个函数；然后是变量 var fuc  因为 3、变量声明（初始化变量值为undefined，
+                         若发生命名冲突，会忽略）；所以 var func这个变量 func 直接被忽略了，结果就是function func(){}
+            };
+            foo(100);
+
+
+
+        <br>
+
+        function foo(x,y,z){
+            function func(){};
+            var func = 1;
+            console.log(func);    // 1     在函数声明阶段func值 是函数func(){} ；在函数初始化阶段之后，在第二个阶段执行
+        //的时候  执行了赋值语句func = 1   所以结果会是1
+
+        };
+        foo(100);
+
+        </p>
+    </li>
+
+    <li>
+
+        <p>
+            函数执行测试；<br>
+            alert(x);   //function
+            var x = 10;
+            alert(x);   // 10
+            x = 20;
+
+            function x(){};
+            alert(x);  //20
+
+            if(true){
+            var a = 1;
+            }else{
+            var b = true;
+            }
+
+            alert(a);  // 1   javaScript是没有块级作用域的，所以不管是 if 和 else 没有被执行，它里面的 a和 b
+            // 都是会被提前处理的，就算是在最前面  alert(a) 会弹出undefined
+            alert(b); // undefined
+        </p>
+    </li>
+    <li>
+        <p style="color:red;font-weight: bold">
+            oop:面向对象编程
+        </p>
+        <p>
+            基于原型的继承<br>
+            function Foo(){
+            this.y = 2;
+            }
+            typeof Foo.prototype; //"object"
+            Foo.protoytpe.x = 1;    //能过赋值语句增加的   prototype原始属性上有toString value
+            var obj3 = new Foo();   //使用new调用的时候 Foo()函数会作为构造器来使用；
+            //并且this会指向一个对象，并且这个对象的原型会指向prototype属性，；obj3的原型prototype
+            obj3.y; //2   y是对象上的
+            boj3.x; //1    x是原型链上的原型  Foo.prototype上的
+        </p>
+        <p>
+            function里面的this<br>
+
+            function Person(name,age){     //Person()这个函数直接调用的话 this.name 和 this.age 会指向全局变量；
+            // 在浏览器里面会指向window     如果使用new 构造器会指向原型为Person.protoytpe这样的一个空对象，然后通过
+            // this.name 给空对象赋值，  这里面虽然没有写 return ，但是使用 new 的话 this会作为return值
+            // this.name 给空对象赋值，  这里面虽然没有写 return ，但是使用 new 的话 this会作为return值
+            this.name = name;   //赋值name
+            this.age = age;
+            }
+        </p>
+
+        <p>
+            function Person(name,age){
+            this.name = name;
+            this.age = age;
+            }
+
+            Person.prototype.hi =  function(){
+            console.log("Hi,my name is" + this.name + ",I'm" + this.age + "years old now.");
+            }
+
+            Person.prototype.LEGS_NUM = 2;
+            Person.prototype.ARMS_NUM = 2;
+            Person.prototype.walk = function(){
+            console.log(this.name + "is walking....");
+            };
+
+            function Student(name,age,className){
+            Person.call(this,name,age);   //调用父类  Person.call()
+            this.className = className;
+            }
+
+            Student.prototype = Object.create(Person.prototype);   //用Object.create()作为原型的空对象
+            // Object.create() 它的作用是创建一个空对象，并且这个对象的原型指向它的参数
+            // 在这里 Student.prototype 会作为 new student 的所有实例的原型，为了继承 Person上的方法，
+            // 所以这里要拿到 Person.prototype ，但是这里为什么要用 Object.create()呢
+            // 假设把  Object.create()去掉，只留 Person.prototype 赋值给 Student.prototype 的话；当想增加
+            // Student 自己的方法的时候 比如：Student.prototype.learn 这样的话由于它们指向的是同一个对象；
+            // 所以在给 Student.prototype 增加属性的时候同时也给 Person.prototype 增加了属性
+
+            Student.prototype.constructor = Student;   //如果不写这一句，那么constructor会指向原型Person
+            Student.prototype.hi = function(){
+            console.log("Hi,my name is" + this.name + " I'm" + this.age + "years old now,and from"
+            + this.className + ".");
+            };
+
+            Student.prototype.learn = function(subject){
+            console.log(this.name + "is learning" + subject + 'at' + this.className + '.');
+            };
+
+            //test
+            var bosn = new Student('Bosn',27,'Class 3, Grade 2');
+
+            bosn.hi();  //Hi,my name is Bosn,I'm 27 years old now,and from class 3, Grade 2.
+            bosn.LEGS_NUM; //2
+            bosn.walk(); //Bosn is walking.....
+            bosn.learn('math');  //Bosn is learning math at Class 3, Grade 2
+        </p>
+        <p>
+            内置构造器的prototype<br>
+            Object.prototype.x = 1;
+            var obj = {};
+            obj.x;  // 1
+            for(var key in obj){
+            console.log('result:' + key);
+            }
+            // result:x   会被遍历出来
+
+            Object.defineProperty(Object.prototype,'x',{writable:true,value:1});  //defineProperty()控制对象属性的特性
+            // 比如是否可写writable，是否可以被设置，是否可以枚举。在defineProperty()设置标签的时候，默认的标签全都是false
+            //在此处只设置了writable:true 并且value值是1  因为没有设置枚举，这里不可被枚举
+            var obj = {};
+            obj.x; // 1
+            for(var key in obj){
+            console.log('result:' + key);
+            }
+            //nothing output here
+        </p>
+        <p>
+            function foo(){};
+            foo.prototype.z = 3;
+            var obj = new foo();
+            obj.y = 2;
+            obj.x = 1;
+
+            obj.x; //1
+            obj.y; //2
+            obj.z; //3
+            typeof obj.toString; // 'function'
+            'z' in obj; //true
+            obj.hasOwnProperty('z'); //false
+            //原型链的末端 Object.prototype = null
+        </p>
+        <p>
+            instanceof 数据类型的判断方法；有两个要求，它右边属性是函数不是函数会报错，左边一般要求是对象，
+            不是对象会返回false；所以instanceof可以判断某一个对象它的原型链上是否有右边函数构造器的prototype
+            属性<br>
+
+            [1,2] instanceof Array === true; //左边的数组 [1,2] 右边是构造器 Array   数组的原型是Array.type
+            // instanceof 一般要求 左边是一个对象 右边要求是一个函数，或者说构造器；instanceof会判断
+            // 右边这个构造器的 prototype 属性是否出现在左边的对象的原型链上
+
+            new Object() instanceof Array === false   //new Object()是一个空对象，原型是Object.prototype
+            // Object.prototype 原型链上是null  ,在它的原型链上只有一个Object.prototype  所以里面没有Array.prototype
+        </p>
+
+        <p>
+            实现继承的方式<br>
+            function Person(){
+            }
+
+            function Student(){
+            }
+
+            Student.prototype = Person.ptototype; //这种写法是错误的  因为子类也会有自己的方法，比如刚才learn()或者有自己的
+            // className属性；如果这样赋值改变了Student的同时也改变了Person
+
+            Student.prototype = new Person(); //2   这样也实现了继承，就是因为调用了构造函数；但是这样也是有问题的
+            //如果 Person()里面会有name , age 这样情况下，name ，age 不会传值，传任何东西都是奇怪的，因为这里
+            // 只是一个类
+            Student.prototype = Object.create(Person.prototype); //3   比较理想的方法   这里创建了一个空的对象，并且
+            //  这个对象的原型指向了Person.prototype，这样既保证了继承Person.prototype是的方法，并且Student.prototype
+            //又有自己的一个空的对象 修改又不会影响原型链
+            Student.prototype.constructor = Person;
+            <br><br>
+
+
+            Object.creat是ES5之后才支持的，在ES5之前可以写一个模拟的方法判断有没有Object.prototype方法<br>
+            if(!Object.creat){
+            Object.create = function(proto){
+            function F(){}  //写一个临时的空函数
+            F.prototype = proto;   // 把空函数的 F 的prototype 属性赋值给想作为原型的一个对象
+            return new F;    //return new F   使用new 的时候会创建一个对象，这个对象的原型会指向构造器的prototype
+            };
+            }
+        </p>
+        <p>
+            调用子类的方法<br>
+            function Person(name){this.name = name;}
+            function Student(name,className){
+            this.className = className;
+            Person.call(this.name);  //调用基类的方法和属性
+            }
+            var bosn = new Student('Bosn','Networkk064');
+            bosn; //Student{className:"Network064",name:"Bosn"}
+
+            Person.prototype.init = function(){     //  初始化方法    初始化学生
+            //do sth.....
+            Person.prototype.init.apply(this,arguments);    //  初始化人
+            };
+        </p>
+
+        <p>
+            链式调用<br>
+            function ClassManager(){}   //定义一个构造器ClassManager(){}
+            ClassManager.prototype.addClass = function(str){     //然后在ClassManager(){}上挂载一个方法; 表示添加一个class
+            console.log('Class:' + str + 'added:');    //输出要添加的class
+            return this;   //this 总是指向ClassManager(){}实例++
+            };
+
+            var manager = new ClassManageer();
+            manager.addClass('classA').addClass('classB')
+            .addClass('classC');
+            //Class:classA added.
+            //Class:classB added.
+            //Class:classC added.
+        </p>
+
+
+
+    </li>
+    <li>
+        <p>
+            正则表达式<br>
+            /abc/.exec("abcdef");  //abc      exce()方法是匹配字符串  此处是匹配 abc 所以abcdef结果是abc
+            /abc/.test("abcde");  //true
+            /abc/.toString();  //"/abc/"    toString()返回正则的全部内容
+
+            var reg = /abc/;reg.compile("def");       // compile()方法是改变正则的属性     此处是把正则赋给一个变量def 得到的结果就是def
+            reg.test("def"); //true  返回true
+        </p>
+        <p>
+            string和正则<br>
+            "abcabcdef".search(/(abc)\1/);  // 0    检索abc的位置 返回的0表示索引在第一个位置
+            "aabbbbcc".replace(/b)+?/, "1");   // aa1bbbbcc    //replace()替换   如果把?去掉，那么四个b会被修改成单独的一个1    aa1cc
+            "aabbbbcc".match(/b+/);  // ["bbbb"]    匹配到一个组
+            "aabbbbccbbaa".match(/b+/g); // ["bbbb","bb"]     /g 表示global
+            "aabbbbccbbaa".split(/b+/); //["aa","cc","aa"]
+        </p>
+    </li>
+</ul>
+
+</body>
+</html>

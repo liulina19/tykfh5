@@ -1,0 +1,63 @@
+@charset "utf-8";
+
+html {font-size: 100%;}   //  1px = 1 ÷ 16 = 0.0625em   16px = 1em
+// 1 ÷ 父元素的font-size × 需要转换的像素值 = em
+
+.reset(){
+  //html,body{overflow: hidden}
+  html,body{-ms-overflow-style: none;overflow: -moz-scrollbars-none;}
+  *{margin: 0;padding: 0;}
+  ul,ol{list-style: none;}
+  a{text-decoration: none;}
+  img{border: none;}
+  ::-webkit-scrollbar{ width: 0 !important;height: 0px;display: none;}//Chrome and Safari 滚动条不显示
+  //.element{-ms-overflow-style: none;}//IE 10+ 滚动条不显示
+  //.element{ overflow: -moz-scrollbars-none; }// Firefox 滚动条不显示
+}
+.reset();
+//清除浮动
+.cearfix{
+  &:after{
+    content: "";
+    display: block;
+    clear:both;
+  }
+  zoom:1;
+}
+.bc(){
+  margin-left:auto;
+  margin-right: auto;
+}
+.fl(@fl:left){
+  float: @fl;
+  display: inline;
+}
+.fr(@fr:right){
+  float: @fr;
+  display: inline;
+}
+.font14(){
+  font-size: 0.750em;   // 16px = 1em  0.0625em × 12px = 0.750em
+}
+@fs: 0.875em;   // 相当于14px
+.rel(){
+  position: relative;
+}
+.abs(){
+  position: absolute;
+}
+.fix(){
+  position: fixed;
+}
+
+.disFl(){
+  display: -webkit-flex;
+  display: flex;
+}
+
+//混合例子
+.border_radius(@radius:0.5em){
+  -webkit-border-radius:@radius;
+  -moz-border-radius:@radius;
+  border-radius:@radius;
+}

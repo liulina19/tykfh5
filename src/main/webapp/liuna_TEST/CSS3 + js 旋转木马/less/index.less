@@ -1,0 +1,55 @@
+@charset "utf-8";  //设置编码格式
+@import "main";  //引入 main.less 文件
+
+
+//第一个弧度DIV
+.wrap {
+  .rel();
+  width:100%;
+  height:10rem;
+  overflow: hidden;
+  background-color:yellow;
+  /* Rotate div */
+  transform:rotate(-3deg);
+  -ms-transform:rotate(-3deg); /* Internet Explorer */
+  -moz-transform:rotate(-3deg); /* Firefox */
+  -webkit-transform:rotate(-3deg); /* Safari 和 Chrome */
+  -o-transform:rotate(-3deg); /* Opera */
+  margin: 0 auto;
+  &_main{
+    .abs();
+    width: 64.8rem;
+    .divOne{
+      width:7.2rem;
+      height:7.2rem;
+      .fl();
+      /* Rotate div */
+      transform:rotate(5deg);
+      -ms-transform:rotate(5deg); /* Internet Explorer */
+      -moz-transform:rotate(5deg); /* Firefox */
+      -webkit-transform:rotate(5deg); /* Safari 和 Chrome */
+      -o-transform:rotate(5deg); /* Opera */
+      text-align: center;
+      margin: 0 auto;
+      img{
+        width: 72%;
+        height:72% ;
+      }
+      p{
+        text-align: center;
+        width: 80%;
+        margin: 0 auto;
+        margin-top: 0px;
+        font-size: 0.5rem;
+        color: #232323;
+        margin-top: 0.3rem;
+      }
+    }
+  }
+}
+
+//第二个弧度DIV
+.container{
+  .rel();
+}
+

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{
+            text-align: center;padding: 0px;margin: 0 auto;
+        }
+        #divOne{
+            font-size: 24px;color:#0000FF;padding-top: 100px;margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="divOne">
+        <p>你看我后台偷偷加载图片哦！！！！</p>
+        <a href="htmlTwo.html" target="_blank">点我看看另一个页面</a>
+    </div>
+
+    <script>
+
+        // 创建new Worker   并引入workerVoucher.js
+        function startWorkerVoucher(){
+            if(typeof(Worker)!=="undefined"){
+                return new Worker("worker.js");
+            }else{
+                return null;
+            }
+        }
+        //预加载图片
+        var interval = 100000;
+        function preloader() {
+            if(document.images) {
+                var img1 = new Image();
+                img1.cc="fu";
+//                    date=new Date();
+//                    img2 = new Image(),
+//                    img3 = new Image();
+                img1.src = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510032829790&di=6a863f02d74ef7cf5f75d6d9ea4fc31c&imgtype=0&src=http%3A%2F%2Fwww.qqpk.cn%2FArticle%2FUploadFiles%2F201111%2F2011111111210035.jpg";
+//                img2.src =  "https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1510035371&di=ab8756be94accc3aac6a58e2f542e757&src=http://www.qqpk.cn/Article/UploadFiles/201111/2011111111215979.jpg";
+//                img3.src = "https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1510035525&di=eaa463aac5ffa13416a0393aa77aec9a&src=http://p2.gexing.com/kongjianpifu/20120830/2055/503f62af0fdf4_600x.jpg";
+            }
+            startWorkerVoucher().postMessage(img1);
+        }
+        preloader();
+function Image() {
+
+}
+
+
+
+
+        // 图片预加载结束
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="prerender" href="htmlTwo.html">
+    <style>
+        body{
+            text-align: center;padding: 0px;margin: 0 auto;
+        }
+        #divOne{
+            font-size: 24px;color:#0000FF;padding-top: 100px;margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="divOne">
+        <p>你看我后台偷偷加载图片哦！！！！</p>
+        <a href="htmlTwo.html" target="_blank">点我看看另一个页面</a>
+    </div>
+<script type="text/javascript">
+    //纯js实现预加载
+    //原理就是循环创建Image对象，并设置对象的src为指定图片，
+    // 然后监听图片加载完成onload = function(){imageloadpost()}，
+    // 当图片加载完成后就会执行到imageloadpost。原来IE6还有一个问题：
+    // 如果预加载的图片已经在内存中则不会再次出发img.onload事件。但是IE7+都没有问题了。
+    // 其他浏览器也没有问题，所以上面这种img.onload监听事件已经没有兼容问题了。
+    function preloadimages(arr){
+        var newimages=[], loadedimages=0
+        var postaction=function(){} //此处增加了一个postaction函数
+        var arr=(typeof arr!="object")? [arr] : arr
+        function imageloadpost(){
+            loadedimages++
+            if (loadedimages==arr.length){
+                postaction(newimages) //加载完成用我们调用postaction函数并将newimages数组做为参数传递进去
+            }
+        }
+        for (var i=0; i<arr.length; i++){
+            newimages[i]=new Image()
+            newimages[i].src=arr[i]
+            newimages[i].onload=function(){
+                imageloadpost()
+            }
+            newimages[i].onerror=function(){
+                imageloadpost()
+            }
+        }
+        return { //此处返回一个空白对象的done方法
+            done:function(f){
+                postaction=f || postaction
+            }
+        }
+
+        new Image().src = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510032829790&di=6a863f02d74ef7cf5f75d6d9ea4fc31c&imgtype=0&src=http%3A%2F%2Fwww.qqpk.cn%2FArticle%2FUploadFiles%2F201111%2F2011111111210035.jpg";
+        new Image().src = "https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1510035371&di=ab8756be94accc3aac6a58e2f542e757&src=http://www.qqpk.cn/Article/UploadFiles/201111/2011111111215979.jpg";
+        new Image().src =  "https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1510035525&di=eaa463aac5ffa13416a0393aa77aec9a&src=http://p2.gexing.com/kongjianpifu/20120830/2055/503f62af0fdf4_600x.jpg";
+
+    }
+
+
+
+
+
+
+
+
+    //方法一
+    var imagesArr = new Array();
+    function loadeImg(url) {
+       for(var i = 0; i < loadeImg.arguments.length; i++){
+           imagesArr[i] = new Image();
+           imagesArr[i].src = loadeImg.arguments[i]
+       }
+    }
+    loadeImg(
+        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510032829790&di=6a863f02d74ef7cf5f75d6d9ea4fc31c&imgtype=0&src=http%3A%2F%2Fwww.qqpk.cn%2FArticle%2FUploadFiles%2F201111%2F2011111111210035.jpg",
+        "https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1510035371&di=ab8756be94accc3aac6a58e2f542e757&src=http://www.qqpk.cn/Article/UploadFiles/201111/2011111111215979.jpg",
+        "https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1510035525&di=eaa463aac5ffa13416a0393aa77aec9a&src=http://p2.gexing.com/kongjianpifu/20120830/2055/503f62af0fdf4_600x.jpg"
+    );
+
+
+
+//方法二：使用Ajax实现预加载
+    window.onload = function() {
+        setTimeout(function() {
+            // XHR to request a JS and a CSS
+            var xhr = new XMLHttpRequest();
+            xhr.open('get','http://domain.tld/preload.js');
+            xhr.send('');
+            xhr = new XMLHttpRequest();
+            xhr.open('get','http://domain.tld/preload.css');
+            xhr.send();
+            // preload image
+            new Image().src = "http://domain.tld/preload.png";
+        }, 1000);
+    };
+//上面代码预加载了“preload.js”、“preload.css”和“preload.png”。1000毫秒的超时是为了防止脚本挂起，而导致正常页面出现功能问题。
+
+
+
+    //方法三：预加载背景图
+    function preloader() {
+        if (document.getElementById) {
+            document.getElementById("preload-01").style.background = "url(http://domain.tld/image-01.png) no-repeat -9999px -9999px";
+            document.getElementById("preload-02").style.background = "url(http://domain.tld/image-02.png) no-repeat -9999px -9999px";
+            document.getElementById("preload-03").style.background = "url(http://domain.tld/image-03.png) no-repeat -9999px -9999px";
+        }
+    }
+    function addLoadEvent(func) {
+        var oldonload = window.onload;
+        if (typeof window.onload != 'function') {
+            window.onload = func;
+        } else {
+            window.onload = function() {
+                if (oldonload) {
+                    oldonload();
+                }
+                func();
+            }
+        }
+    }
+    addLoadEvent(preloader);
+
+
+
+
+    //方法四：
+    function preloader4() {
+        if(document.images) {
+            var img1 = new Image(),
+                img2 = new Image(),
+                img3 = new Image();
+            img1.src = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510032829790&di=6a863f02d74ef7cf5f75d6d9ea4fc31c&imgtype=0&src=http%3A%2F%2Fwww.qqpk.cn%2FArticle%2FUploadFiles%2F201111%2F2011111111210035.jpg";
+            img2.src= "https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1510035371&di=ab8756be94accc3aac6a58e2f542e757&src=http://www.qqpk.cn/Article/UploadFiles/201111/2011111111215979.jpg";
+            img3.src = "https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1510035525&di=eaa463aac5ffa13416a0393aa77aec9a&src=http://p2.gexing.com/kongjianpifu/20120830/2055/503f62af0fdf4_600x.jpg";
+        }
+    }
+    
+    function addLoadEvent4(func4) {
+        var oldonload = window.onload;
+        if(typeof window.onload != 'function'){
+            window.onload = func4;
+        } else {
+            window.onload = function () {
+                if(onload){
+                    onload();
+                }
+                func4();
+            }
+        }
+    }
+
+    addLoadEvent4(preloader4);
+
+
+
+
+
+
+
+
+    function loadImage(url, callback) {
+        var img = new Image(); //创建一个Image对象，实现图片的预下载
+        img.src = url;
+        if (img.complete) { // 如果图片已经存在于浏览器缓存，直接调用回调函数
+            callback.call(img);
+            return; // 直接返回，不用再处理onload事件
+        }
+        img.onload = function () { //图片下载完毕时异步调用callback函数。
+            callback.call(img);//将回调函数的this替换为Image对象
+        };
+    }
+    loadImage(url,callback);
+</script>
+
+
+</body>
+</html>

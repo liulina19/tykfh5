@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="mainW.js"></script>
+
+    <title>Web Worker案例</title>
+</head>
+<style>
+    #wraper{
+        width: 608px;height: 104px;overflow: hidden;margin: 0 auto;
+    }
+    #wraperMain{
+        width: 1220px;
+        height: auto;
+    }
+    .example{
+        float: left;
+        width: 300px;height: 100px;
+        border: 2px solid #0d87dc;
+        background: #2ad0a8;
+        font-size: 14px;
+        color: #fff;
+        text-align: center;
+        line-height: 100px;
+    }
+</style>
+<body>
+<div id="wraper">
+    <div id="wraperMain">
+        <div class="example">1</div>
+        <div class="example">2</div>
+        <div class="example">3</div>
+        <div class="example">4</div>
+    </div>
+</div>
+<button onclick="timeOut()" id="lef">left</button>    <button onclick="stopWorker()">right</button>
+    <p>
+        Web Worker的基本原理就是在当前javascript的主线程中，使用Worker类加载一个javascript文件来开辟一个新的线程，
+        起到互不阻塞执行的效果，并且提供主线程和新线程之间数据交换的接口：postMessage，onmessage<br>
+        向 web worker 添加一个 "onmessage" 事件监听器：<br>
+    </p>
+    <p>
+        终止 Web Worker<br>
+        当我们创建 web worker 对象后，它会继续监听消息（即使在外部脚本完成之后）直到其被终止为止。<br>
+        如需终止 web worker，并释放浏览器/计算机资源，请使用 terminate() 方法：
+    </p>
+<input id="number1">   <input id="number2">    <input class="result">
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Title</title>
+</head>
+    <style>
+        body{
+
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+        .wrap{
+            position:absolute;
+            width: 100%;
+            overflow: hidden;
+        }
+        .wrap:after{
+            position: static;
+        }
+        .touch{
+            position:  relative;
+            width: 896px;
+            height: 120px;
+            left:-400px;
+        }
+        .touchDiv{
+            width: 100px;
+            height: 100px;
+            background: #fFF;
+            padding: 5px;
+            float: left;
+            border: 1px #FD482C solid;
+            /*display: inline;*/
+            text-align: center;
+            color: #fff;
+
+        }
+        .touchDiv p{
+            background: #0000FF;
+            line-height:90px;
+            margin-top: 5px;
+        }
+    </style>
+<body>
+
+<div class="wrap" id="output">
+    <div class="touch">
+        <div class="touchDiv"><p>1</p></div>
+        <div class="touchDiv"><p>2</p></div>
+        <div class="touchDiv"><p>3</p></div>
+        <div class="touchDiv"><p>4</p></div>
+        <div class="touchDiv"><p>5</p></div>
+        <div class="touchDiv"><p>6</p></div>
+        <div class="touchDiv"><p>7</p></div>
+        <div class="touchDiv"><p>8</p></div>
+    </div>
+</div>
+<div class="yidong" style="width: 100px;height:100px;background: red;position: relative"></div>
+    <script>
+        //实时获取滑动手势移动的距离
+        function getTouchScroll() {
+            var xScroll;
+            if (self.pageYOffset) {   //获得窗口的滚动条偏移量(self指窗口本身)
+                xScroll = self.pageXOffset;
+            } else if (document.documentElement && document.documentElement.scrollTop) {
+                // document.documentElement.scrollTop(获取滚动条位置)
+                xScroll = document.documentElement.scrollLeft;
+            } else if (document.body) {
+                //获取页面的水平滚动条位置
+                xScroll = document.body.scrollLeft;
+            }
+            return xScroll;
+        }
+
+
+
+
+
+        function juli() {
+            var el = document.querySelector('.yidong');
+            var startPosition, endPosition, deltaX, deltaY, moveLength;
+
+            el.addEventListener('touchstart', function (e) {
+                var touch = e.touches[0];
+                startPosition = {
+                    x: touch.pageX,
+                    y: touch.pageY
+                }
+            });
+
+            el.addEventListener('touchmove', function (e) {
+                var touch = e.touches[0];
+                endPosition = {
+                    x: touch.pageX,
+                    y: touch.pageY
+                }
+
+                deltaX = endPosition.x - startPosition.x;
+                deltaY = endPosition.y - startPosition.y;
+                moveLength = Math.sqrt(Math.pow(Math.abs(deltaX), 2) + Math.pow(Math.abs(deltaY), 2));
+                console.log(moveLength);
+            });
+        }
+    </script>
+</body>
+</html>

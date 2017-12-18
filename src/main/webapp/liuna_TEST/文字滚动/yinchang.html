@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>文字超出限制字数后隐藏</title>
+    <style>
+        .text {
+            width: 800px;
+            height: 48px;
+            line-height: 24px;
+            color: #333;
+            background: #ccc;
+            border: #eaeaea 1px solid;
+            margin: 40px auto;
+        }
+        .text1{
+            width: 500px;
+            height: 72px;
+        }
+    </style>
+</head>
+<body>
+<div class="text">奥斯卡金像奖之前，迪卡普里奥获得本年度英国电影和电视艺术学院（BAFTA）最佳男主角奖。该奖项被认为是奥斯卡金像奖的前奏。尽管他曾经三次被提名参选，影迷们也一直为他鸣不平，但迪卡普里奥至今尚未获得过奥斯卡奖。</div>
+<div class="text text1">奥斯卡金像奖之前，迪卡普里奥获得本年度英国电影和电视艺术学院（BAFTA）最佳男主角奖。该奖项被认为是奥斯卡金像奖的前奏。尽管他曾经三次被提名参选，影迷们也一直为他鸣不平，但迪卡普里奥至今尚未获得过奥斯卡奖。但迪卡普里奥至今尚未获得过奥斯卡奖。但迪卡普里奥至今尚未获得过奥斯卡奖。</div>
+<script>
+    //根据class名称获取元素,此案例中之所以要用class获取元素名称,是为了可以控制多个元素( text,text1 )的字符串度.
+    function getByClass(oParent, sClass) {
+        if (oParent.getElementsByClassName) {
+            return oParent.getElementsByClassName(sClass);
+        } else { //IE 8 7 6
+            var arr = [];
+            var reg = new RegExp('\\b' + sClass + '\\b');
+            var aEle = oParent.getElementsByTagName('*');
+            for (var i = 0; i < aEle.length; i++) {
+                if (reg.test(aEle[i].className)) {
+                    arr.push(aEle[i]);
+                }
+            }
+            return arr;
+        }
+    }
+    function testAuto() {
+        var textName = getByClass(document, 'text');
+        for (var i = 0; i < textName.length; i++) {
+            var nowLeng = textName[i].innerHTML.length;
+            if ( nowLeng > 85 ) {
+                var nowWord = textName[i].innerHTML.substr(0, 25) + '······';
+                textName[i].innerHTML = nowWord;
+            }
+        }
+    }
+    testAuto();
+</script>
+</body>
+</html>

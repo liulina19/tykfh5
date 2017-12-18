@@ -1,0 +1,38 @@
+.wraper {
+    width: 100%;
+    margin: 0 auto;
+}
+ .yuan {
+    position: relative;
+    width: 100%;
+    height: 11em;
+    list-style-type: none;
+    /*cursor一些不同的光标*/
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #000;
+    cursor: pointer;
+    overflow: hidden;
+    top: -4.9em;
+}
+ .yuan:before {
+    clear: both;
+}
+.yuan:after {
+    clear: both;
+}
+ .box {
+    position: absolute;
+    left: 0px;
+    top: 0;
+    font-size: 0.75em;
+    width: 5.95em;
+    height: 100%;
+    /*background: grey;*/
+    text-align: center;
+}
+.box>img {
+    width: 5.9em;
+    margin: 0 auto;
+}
