@@ -1,0 +1,516 @@
+@charset "utf-8";
+html {font-size: 100%;}
+body {
+  -webkit-overflow-scrolling: touch;  //上下拉动滚动条时卡顿、慢
+  overflow-scrolling: touch;
+}
+/*1px = 1 ÷ 16 = 0.0625em   16px = 1em*/
+/*1 ÷ 父元素的font-size × 需要转换的像素值 = em*/
+.reset(){
+  *{margin: 0;padding: 0;}
+  ul,ol{list-style: none;}
+  a{text-decoration: none;}
+}
+img{  width: 100%;  display: block;  border: none;  }
+.reset();
+//清除浮动
+.cearfix{
+  &:after{  content: "";  display: block;  clear:both;  }
+  zoom:1;
+}
+select{
+  box-sizing: inherit;
+
+}
+@w:100%;
+.flex{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: box;
+  display: flex;
+  flex-direction: row;
+}
+.bc(){  margin-left:auto;  margin-right: auto;  }
+.fl(@fl:left){  float: @fl;  display: inline;  }
+.fr(@fr:right){  float: @fr;  display: inline;  }
+.font14(){  font-size: 0.875em;  }
+@fs:0.875em; //14px
+.rel(){  position: relative;  }
+.abs(){  position: absolute;  }
+.fix(){  position: fixed; }
+
+
+
+//给表单标签去除点击时的默认的样式
+input,select,option,textarea{outline: none;}
+/*将默认的select选择框样式清除  去掉三角形*/
+select{
+  appearance:none;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+}
+/*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+select::-ms-expand { display: none; }
+
+//tab  tabHide 公共样式
+.tab,.tabHide{
+  width: @w;
+
+  margin: 0 auto;
+  &_One{
+    .fl(@fl:left);
+    width: @w/3;
+    text-align: center;
+  }
+  .selected{
+    color:#3f98cd;
+  }
+}
+.bottom(@c:#eaeaea){
+  border-bottom: 1px solid @c;
+}
+
+//下拉菜单  对号的图标
+.tabHide-i{
+  .fr();
+  display:none;
+  display: inline-block;
+  width: 7px;
+  height:3px;
+  background: #4286f5;
+  line-height: 0;
+  font-size:0;
+  vertical-align: middle;
+  -webkit-transform: rotate(45deg);
+  &:after{
+    content:'/';display:block;
+    width: 14px;
+    height:3px;
+    background: #4286f5;
+    -webkit-transform: rotate(-90deg) translateY(-50%) translateX(50%);
+  }
+}
+
+
+
+
+//向下箭头的图标公共部分
+.idown(@color:#656565){
+  content: '';
+  display: inline-block;
+  border-bottom: 0.0625em solid @color;
+  border-right: 0.0625em solid @color;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  vertical-align: middle;
+}
+//tab菜单  向下箭头的图标
+.tabOneidown {
+  .idown(@color:#656565);
+  width: 0.5em;
+  height: 0.5em;
+  //margin-top: 0.8em;
+  margin-left: 0.5em;
+}
+
+//营业厅列表  向下箭头的图标
+.outletThree_idown{
+  .idown(@color:#656565);
+  width: 0.75em;
+  height: 0.75em;
+  color: #a0a0a5;
+}
+
+
+//向上箭头
+.tabOneiup(@color:#656565){
+  content: '';
+  display: inline-block;
+  border-top: 0.0625em solid @color;
+  border-left: 0.0625em solid @color;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  vertical-align: middle;
+  width: 0.5em;
+  height: 0.5em;
+  margin-left: 0.5em;
+}
+.tabOneiupBlue{
+  .tabOneiup(@color:#4286f5);
+}
+.hide{
+  display: none;
+}
+.nohide{
+  display: block;
+}
+//tab样式
+.tab{
+  min-height: 3.5em;
+  max-height: 3.5em;
+  &_One{
+    background: #fff;
+    line-height: 3.5em;
+    color:#a0a0a5;
+    &_line{
+      //右侧分隔线
+      //border-right-style: solid;
+      //border-right-color: #555;
+      //border-right-width: 0.0625em;
+      input{
+        white-space: nowrap;
+        overflow:hidden;
+        width: 70%;
+        border: none;
+        text-align: center;
+        font-size: 1.142857em;
+        color: #a0a0a5;
+        background: #fff;
+      }
+      input[value]{
+        font-size:  1em;
+      }
+    }
+    span{
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      font-size: 0.875em;
+    }
+    #addr-end{
+      width: 0px;
+      white-space:nowrap;
+      //float: left;
+    }
+    .addrDiv{
+      width: 75%;
+      overflow: hidden;
+      float: left;
+    }
+  }
+}
+.line{
+  border: 1px solid #eeeff3;
+}
+
+
+//下拉菜单样式
+.tabContent{
+  border-top: solid;
+  border-top-color: #eeeff3;
+  border-top-width: 2px;
+}
+.tabtabHide_Two_public{
+  width: @w/3;
+}
+.tabHide{
+  width: @w;
+  height: 100%;
+  clear: both;
+  .abs();
+  background-color:rgba(0,0,0,0.4);
+  z-index: 9999;
+  //距离选项
+  &_One{
+    width: @w;
+    background: #fff;
+    ul{
+      padding:0em 0em 0em 0.625em;
+      text-align: left;
+      li{
+        border-bottom: 1px solid #eaeaea;
+        padding: 0.625em;
+        color: #1e212c;
+        font-size: 0.875em;
+        li:last-child{
+          border-bottom: none;
+        }
+      }
+    }
+  }
+
+  //省份选择  城市选择  县区选择的下拉菜单样式
+  fieldset{
+    width: @w;
+    border: none;
+    //padding: 0.625em 0 0.625em 0;
+    background: #fff;
+    height: 100%;
+    select{
+      border: none;
+      padding: 0.625em 0 0.625em 0.625em;
+    }
+    option{
+      border: none;
+      font-size: 0.875em;
+      line-height: 1.571428em;
+      outline:none;
+    }
+    input:focus { outline: none; }
+    select:first-child{
+      width: 25%;
+      background: #edf2f8;
+      //padding: 0em 0 0.625em 0.625em;
+    }
+    select:nth-child(2){
+      width: 32%;
+
+    }
+    select:nth-child(3){
+      width: 32%;
+
+    }
+  }
+//城市的确定按扭
+   .cityButton {
+     width: 100%;
+     position: fixed;
+     bottom: 0px;
+     padding: 1.625em;
+     padding-left: 9%;
+     .btn{
+       width: 40%;
+       padding: 0.625em;
+       border: 0px;
+       background: #eee;
+     }
+     .btncolor{
+       color:#fff;
+       background: #0d87dc;
+       border: 0px;
+     }
+     .btnClear{
+       width: 40%;
+       padding: 0.625em;
+       margin-left: 2%;
+       background: #eee;
+       border: 0px;
+     }
+  }
+  //选中时的下划线
+.tabHideline{
+  border-bottom: 2px solid #3f98cd;
+}
+}
+
+//营业厅列表
+.outlet{
+  z-index: 1;
+  .rel();
+  clear: both;
+  ul{
+    li{
+      display: flex;
+      flex-direction: row;
+      border-bottom: 1px solid #eeeff3;
+      padding:1.25em 0.625em;
+      .outletOne{
+        width: 4.375em;
+        height: 4.375em;
+      }
+
+      .outletTwo{
+        padding-left: 0.625em;
+        &_part1{
+          font-size: 1em;
+          color: #1e212c;
+          line-height: 1.5em;
+          //max-width: 85%;
+        }
+        &_part2{
+          font-size: 0.75em;
+          color:#a0a0a5;
+          line-height: 1.57em;
+          max-width: 85%;
+        }
+        &_part3{
+          font-size: 0.75em;
+          color: #1e212c;
+          padding-top: 0.714em;
+          span{
+            margin-right: 1em;
+          }
+          img{
+            width: 1.7857em;
+            height: 1.7857em;
+            display: inherit;
+            vertical-align: -webkit-baseline-middle;
+            vertical-align: middle;
+            margin-right: 0.357em;
+          }
+        }
+      }
+      .outletThree{
+        position: absolute;
+        right: 0.714em;
+        &_Is{
+          img{
+            vertical-align: -webkit-baseline-middle;
+            vertical-align: middle;
+            display: inline-block;
+            width: 1.43em;
+            height: 1.43em;
+          }
+          span{
+            display: inline-block;
+            //padding: 0 0.714em 0 0.357em;
+            color: #3f98cd;
+            font-size: 0.75em;
+          }
+        }
+
+        &_i{
+          margin-top: 1em;
+          position: absolute;
+          right: 0.1em;
+        }
+      }
+
+    }
+    li:last-child{
+      border-bottom:none;
+    }
+  }
+}
+//详情的样式
+.details-wraper{
+  width: @w;
+  height: 100%;
+  margin: 0 auto;
+  .details{
+    display: flex;
+    flex-direction: row;
+    padding: 1em 0.625em;
+    .detailsLeft{
+      width: 4.375em;
+      height: 4.375em;
+    }
+    .detailsRight{
+      margin-left: 1em;
+      .address{
+        font-size: 1em;
+        line-height: 1.5625em;
+        color:#1e212c;
+      }
+      .stars{
+
+      }
+      .week,.businessHours{
+        color:#a0a0a5;
+        font-size: @fs;
+        line-height: 1.57142857em;
+      }
+    }
+  }
+  .service{
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #eeeff3;
+    border-top: 1px solid #eeeff3;
+    padding:0 0.625em;
+    .serviceR,.serviceL{
+      width: @w/2;
+      padding-left: 1em;
+      font-size: @fs;
+      line-height: 2.8571428em;
+      color:#1e212c;
+    }
+    .serviceL{
+      //padding-left: 2em;
+      border-right: 1px solid #eeeff3;
+    }
+    .serviceR{
+      //padding-left: 2em;
+    }
+    img{
+      width: 1.5em;
+      height: 1.5em;
+      display: inherit;
+      vertical-align: -webkit-baseline-middle;
+      vertical-align: middle;
+      margin-right: 0.357em;
+    }
+  }
+  .addressDe{
+    border-bottom: 1px solid #eeeff3;
+    padding: 1em 0em;
+    font-size: @fs;
+    color:#1e212c;
+    display: flex;
+    flex-direction: row;
+    p{
+      padding-left: 2em;
+    }
+    .rightAr{
+      margin-left: 3.625em;
+      margin-top: 0.2857em;
+    }
+    img{
+      width: 1.5em;
+      height: 1.5em;
+      display: inherit;
+      vertical-align: -webkit-baseline-middle;
+      vertical-align: middle;
+      margin-right: 0.357em;
+    }
+  }
+}
+//五角星
+.star-five{
+  margin: 5px 0;
+  position: relative;
+  display: block;
+  color: red;
+  width: 0px;
+  height: 0px;
+  border-right: 10px solid transparent;
+  border-bottom: 7px solid red;
+  border-left: 10px solid transparent;
+  -moz-transform:    rotate(35deg);
+  -webkit-transform: rotate(35deg);
+  -ms-transform:     rotate(35deg);
+  -o-transform:      rotate(35deg);
+}
+.star-five:before {
+  border-bottom: 8px solid red;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  position: absolute;
+  height: 0;
+  width: 0;
+  top: -4.5px;
+  left: -6.5px;
+  display: block;
+  content: "";
+  -webkit-transform: rotate(-35deg);
+  -moz-transform:    rotate(-35deg);
+  -ms-transform:     rotate(-35deg);
+  -o-transform:      rotate(-35deg);
+
+}
+.star-five:after {
+  position: absolute;
+  display: block;
+  color: red;
+  top: 0.3px;
+  left: -10.5px;
+  width: 0px;
+  height: 0px;
+  border-right: 10px solid transparent;
+  border-bottom: 7px solid red;
+  border-left: 10px solid transparent;
+  -webkit-transform: rotate(-70deg);
+  -moz-transform:    rotate(-70deg);
+  -ms-transform:     rotate(-70deg);
+  -o-transform:      rotate(-70deg);
+  content: "";
+}
+//向右箭头
+.rightArrow{
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid #eeeff3;
+  border-right: 2px solid #eeeff3;
+  transform: rotate(45deg);
+  vertical-align: middle;
+}
