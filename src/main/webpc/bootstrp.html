@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<link rel="stylesheet" type="text/css" href="css/" />-->
+    <script type="text/javascript" src="../webapp/js/jquery-1.11.1.js"></script>
+</head>
+<style>
+    body{
+        width: 100%;
+        padding: 0;
+        background: #eff3f6;
+        margin: 0 auto;
+    }
+    a{text-decoration: none}
+    li{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .touxiang{
+        width: 50%;
+        margin: 0 auto;
+        margin-top: 10px;
+    }
+    .touxiang-img{
+        width: 50px;
+        height: 50px;
+        float: left;
+    }
+    .touxiang-img img{
+        width: 100%;
+        border-radius: 50%;
+        height: 100%;
+    }
+    .touxiang-sanjiao{
+        float: left;
+    }
+    .icon{
+        width: 0;
+        height: 0;
+        border-width: 8px 8px 0;
+        border-style: solid;
+        border-color: #333 transparent transparent;
+        margin: 20px 0px 0px 20px;
+        position: relative;
+    }
+    .hide{
+        position: absolute;
+    }
+    .hid{
+        display: none;
+    }
+    .shw{
+        display: block;
+    }
+
+    /*侧边栏*/
+    .left{
+        width: 250px;
+        float: left;
+        background: #fff;
+        margin: 0 auto;
+    }
+    .left ul{
+        font-size: 12px;
+    }
+    .left ul li{
+
+
+    }
+    .leftTabA{
+        padding: 20px 0;
+        padding-left: 30px;
+        padding-right: 15px;
+    }
+    .liBack{
+        background: #eff3f6;
+    }
+    .left ul li img{
+        width: 11px;
+        height: 11px;
+        margin-right: 20px;
+    }
+
+    /*左箭头*/
+    .left-iconLeft{
+        display: inline-block;
+        margin: 2px;
+        border-right: 1px solid;
+        border-bottom: 1px solid;
+        width: 10px;
+        height: 10px;
+        transform: rotate(-45deg);
+    }
+    /*右箭头*/
+    .left-iconRight{
+        display: inline-block;
+        margin: 2px;
+        border-left: 1px solid;
+        border-bottom: 1px solid;
+        width: 120px; height: 10px;
+        transform: rotate(45deg);
+    }
+    .arrow{
+        float: right;
+    }
+    /*向右箭头*/
+    .arrow-right{
+        border-right: 1px solid #666;
+        border-top: 1px solid #666;
+        height: 6px;
+        width: 6px;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        /*不加这两个属性三角会比上一个略丑, 大家可以试一下*/
+        border-left: 2px solid transparent;
+        border-bottom: 2px solid transparent;
+    }
+    /*向上箭头*/
+    .arrow-up{
+        content: '';
+        display: inline-block;
+        border-top:1px solid #656565;
+        border-left: 1px solid #656565;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        vertical-align: middle;
+        width: 6px;
+        height: 6px;
+        margin-left: 12px;
+        color: #656565;
+    }
+    /*向下箭头*/
+    .arrow-down{
+        content: '';
+        width: 6px;
+        height: 6px;
+        color: #a0a0a5;
+        display: inline-block;
+        border-bottom: 1px solid #656565;
+        border-right: 1px solid #656565;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        vertical-align: middle;
+    }
+    .ul-hide{
+        background: #fff;
+        display: none;
+        padding-left: 45px;
+    }
+    .left ul li .ul-hide li{
+        padding: 10px;
+    }
+</style>
+<body>
+    <div class="touxiang">
+        <div class="touxiang-img"><img src="touxiang.png"></div>
+        <div class="touxiang-sanjiao">
+            <div class="icon"></div>
+            <div class="hide hid">
+                <p>隐藏部分一</p>
+                <p>隐藏部分二</p>
+                <p>隐藏部分三</p>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+    <div class="left">
+        <ul>
+            <li class="leftTab">
+                <p class="leftTabA"><img src="img/1.png"><span>菜单一</span><span class="arrow arrow-right"></span></p>
+                <ul class="ul-hide">
+                    <li>菜单一的隐藏菜单一</li>
+                    <li>菜单一的隐藏菜单二</li>
+                    <li>菜单一的隐藏菜单三</li>
+                    <li>菜单一的隐藏菜单四</li>
+                </ul>
+            </li>
+
+            <li class="leftTab">
+                <p class="leftTabA"> <img src="img/2.png"><span>菜单二</span><span class="arrow arrow-right"></span></p>
+                <ul class="ul-hide">
+                    <li>菜单二的隐藏菜单一</li>
+                    <li>菜单二的隐藏菜单二</li>
+                    <li>菜单二的隐藏菜单三</li>
+                    <li>菜单二的隐藏菜单四</li>
+                </ul>
+            </li>
+            <li class="leftTab">
+                <p class="leftTabA"><img src="img/3.png"><span>菜单三</span><span class="arrow arrow-right"></span></p>
+                <ul class="ul-hide">
+                    <li>菜单三的隐藏菜单一</li>
+                    <li>菜单三的隐藏菜单二</li>
+                    <li>菜单三的隐藏菜单三</li>
+                    <li>菜单三的隐藏菜单四</li>
+                </ul>
+            </li>
+            <li class="leftTab">
+                <p class="leftTabA"><img src="img/4.png"><span>菜单四</span><span class="arrow arrow-right"></span></p>
+                <ul class="ul-hide">
+                    <li>菜单四的隐藏菜单一</li>
+                    <li>菜单四的隐藏菜单二</li>
+                    <li>菜单四的隐藏菜单三</li>
+                    <li>菜单四的隐藏菜单四</li>
+                </ul>
+            </li>
+            <li class="leftTab">
+                <p class="leftTabA"><img src="img/5.png"><span>菜单五</span><span class="arrow arrow-right"></span></p>
+                <ul class="ul-hide">
+                    <li>菜单五的隐藏菜单一</li>
+                    <li>菜单五的隐藏菜单二</li>
+                    <li>菜单五的隐藏菜单三</li>
+                    <li>菜单五的隐藏菜单四</li>
+                </ul>
+            </li>
+            <li class="leftTab">
+                <p class="leftTabA"><img src="img/6.png"><span>菜单六</span><span class="arrow arrow-right"></span></p>
+                <ul class="ul-hide">
+                    <li>菜单六的隐藏菜单一</li>
+                    <li>菜单六的隐藏菜单二</li>
+                    <li>菜单六的隐藏菜单三</li>
+                    <li>菜单六的隐藏菜单四</li>
+                </ul>
+            </li>
+            <li class="leftTab">
+                <p class="leftTabA"><img src="img/7.png"><span>菜单七</span><span class="arrow arrow-right"></span></p>
+                <ul class="ul-hide">
+                    <li>菜单七的隐藏菜单一</li>
+                    <li>菜单七的隐藏菜单二</li>
+                    <li>菜单七的隐藏菜单三</li>
+                    <li>菜单七的隐藏菜单四</li>
+                </ul>
+            </li>
+            <li class="leftTab">
+                <p class="leftTabA"><img src="img/8.png"><span>菜单八</span><span class="arrow arrow-right"></span></p>
+                <ul class="ul-hide">
+                    <li>菜单八的隐藏菜单一</li>
+                    <li>菜单八的隐藏菜单二</li>
+                    <li>菜单八的隐藏菜单三</li>
+                    <li>菜单八的隐藏菜单四</li>
+                </ul>
+            </li>
+            <li class="leftTab">
+                <p class="leftTabA"> <img src="img/9.png"><span>菜单九</span><span class="arrow arrow-right"></span></p>
+                <ul class="ul-hide">
+                    <li>菜单九的隐藏菜单一</li>
+                    <li>菜单九的隐藏菜单二</li>
+                    <li>菜单九的隐藏菜单三</li>
+                    <li>菜单九的隐藏菜单四</li>
+                </ul>
+            </li>
+            <li class="leftTab">
+                <p class="leftTabA"><img src="img/10.png"><span>菜单十</span><span class="arrow arrow-right"></span></p>
+                <ul class="ul-hide">
+                    <li>菜单十的隐藏菜单一</li>
+                    <li>菜单十的隐藏菜单二</li>
+                    <li>菜单十的隐藏菜单三</li>
+                    <li>菜单十的隐藏菜单四</li>
+                </ul>
+            </li>
+            <li><div class="left-iconLeft"></div></li>
+        </ul>
+    </div>
+</body>
+    <script>
+////        点击隐藏方法一
+//        $(document).on('click', '.icon', function () {
+//                var display = $('.hide').css('display');
+////                $('.hide').hide();
+//                if(display == 'none'){
+////                    $('.hide').show();
+//                    $('.hide').removeClass('hid');
+//                    $('.hide').addClass('shw');
+//                }else {
+////                    $('.hide').hide();
+//                    $('.hide').removeClass('shw');
+//                    $('.hide').addClass('hid')
+//                }
+//        })
+
+    //        点击隐藏方法二
+    $(document).on('click', '.icon', function () {
+        var display = $('.hide').css('display');
+        if(display == 'none'){
+            $('.hide').show();
+        }else {
+            $('.hide').hide();
+        }
+    })
+
+//        侧边栏效果
+
+    $('.leftTab').each(function (index, obj) {
+        //这里的this指向每次遍历中Object的当前属性值   //index表示leftTab当前下标   //obj表示leftTab当前元素
+            $(obj).click(
+                function () {
+                   var display = $('.ul-hide').eq(index).css('display');
+                    $('.ul-hide').hide();
+                    if(display == 'none'){
+                        $('.ul-hide').eq(index).show();
+                        $('.leftTabA').eq(index).addClass('liBack');
+                        $('.arrow').eq(index).removeClass('arrow-right');
+                        $('.arrow').eq(index).addClass('arrow-down');
+                    }else {
+                        $('.ul-hide').eq(index).hide();
+                        $('.leftTabA').eq(index).removeClass('liBack');
+                        $('.arrow').eq(index).removeClass('arrow-down');
+                        $('.arrow').eq(index).addClass('arrow-right');
+                    }
+                }
+            );
+    })
+
+    </script>
+</html>
