@@ -1,0 +1,17 @@
+
+附近网点详情
+	/public/sjkf/nearcolumn/GetNearColumnInfo.jspx?columnId=1&channelId=happygo&   DetailStore.js
+网点附近区县查询
+	/public/sjkf/nearcolumn/GetAreaByProv?columnId=1   AreaStore.js
+附近网点
+	/public/sjkf/nearcolumn/GetNearColumnList?columnId=1&channelId=happygo&PageSize=0&   ClassifyNameStore.js、DistanceStore.js、TweetStore.js
+获取国家各城市区号
+	/public/sjkf/roamingDestination/QueryCityAreaCode  ProvStore.js
+照片墙
+	/public/sjkf/netpic/listNetPic  DetailMain.js、PicShow.js
+网点公告详情
+	/public/sjkf/netnotice/infoNetNotice   NoticeDetail.js、NoticeList.js
+小黑板
+	/public/sjkf/nearcolumn/weShopBlackboard.jspx  BlackBoard.js  没有文档接口，应该是小黑板接口
+	/public/sjkf/blackboard/getInfo.jspx?id=21  文档的接口，小黑板接口
+	
